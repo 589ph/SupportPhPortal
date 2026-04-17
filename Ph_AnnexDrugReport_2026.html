@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>服用薬剤総合評価シート</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans JP', sans-serif; background:#f1f5f9; margin:0; }
+    @media screen {
+      .app-container { display:flex; min-height:100vh; overflow:hidden; }
+      .side-form { width:560px; background:#fff; padding:24px; overflow-y:auto; box-shadow:4px 0 15px rgba(0,0,0,.08); z-index:10; }
+      .main-preview { flex-grow:1; padding:20px; background:#e2e8f0; display:flex; justify-content:center; overflow:auto; }
+      .preview-wrap { width:210mm; transform-origin:top center; }
+      .page-a4 {
+        width:210mm; min-height:297mm; background:#fff; padding:14mm 14mm 12mm 14mm;
+        box-sizing:border-box; box-shadow:0 10px 30px rgba(0,0,0,.12); margin-bottom:20px;
+      }
+      @media (max-width:1450px){ .preview-wrap { transform:scale(.82); } }
+      @media (max-width:1100px){ .preview-wrap { transform:scale(.64); } }
+      #print-only-container { display:none; }
+    }
+    @media print {
+      @page { size:A4; margin:0; }
+      body { background:#fff !important; }
+      .app-container, .no-print { display:none !important; }
+      #print-only-container { display:block !important; width:210mm !important; background:#fff !important; }
+      .page-a4 {
+        width:210mm !important; min-height:297mm !important; height:297mm !important;
+        padding:14mm 14mm 12mm 14mm !important; box-sizing:border-box !important;
+        box-shadow:none !important; margin:0 !important; overflow:hidden !important;
+        page-break-after:always;
+      }
+      table, td, th { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    }
+    .form-card { background:#fff; border-radius:8px; padding:14px; border:1px solid #e2e8f0; margin-bottom:12px; }
+    .doc-table { width:100%; border-collapse:collapse; border:1.2px solid #111; table-layout:fixed; }
+    .doc-table td, .doc-table th {
+      border:1px solid #111; padding:4px 5px; vertical-align:top; font-size:10.2px; color:#111; word-wrap:break-word; line-height:1.25;
+    }
+    .section-head { font-weight:700; }
+    .small { font-size:9px; }
+    .tiny { font-size:8.5px; }
+  </style>
+</head>
+<body>
+
+<div class="app-container no-print">
+  <aside class="side-form">
+    <h1 class="text-xl font-bold mb-4 border-b pb-2 text-slate-800">服用薬剤総合評価シート 作成</h1>
+
+    <div class="space-y-3">
+      <div class="form-card">
+        <label class="block text-xs font-bold text-blue-600 mb-2">1 患者情報（基本）</label>
+        <div class="grid grid-cols-3 gap-2 mb-2">
+          <input type="text" id="age" placeholder="年齢" class="border p-2 rounded text-sm" oninput="syncUpdate()">
+          <input type="text" id="gender" placeholder="性別" class="border p-2 rounded text-sm" oninput="syncUpdate()">
+          <input type="text" id="heightWeight" placeholder="身長・体重・(体表面積)" class="border p-2 rounded text-sm" oninput="syncUpdate()">
+        </div>
+        <div class="grid grid-cols-3 gap-2 mb-2">
+          <input type="text" id="organIssue" placeholder="投与量設計等薬物治療に係る臓器機能障害" class="border p-2 rounded text-sm" oninput="syncUpdate()">
+          <input type="text" id="careLevel" placeholder="介護度" class="border p-2 rounded text-sm" oninput="syncUpdate()">
+          <input type="text" id="medManager" placeholder="服薬管理者" class="border p-2 rounded text-sm" oninput="syncUpdate()">
+        </div>
+        <textarea id="understanding" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="理解度（病識・服薬アドヒアランス・服薬コンプライアンス等）" oninput="syncUpdate()"></textarea>
+        <textarea id="dispenseNote" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="調剤上の留意点（一包化・粉砕等）" oninput="syncUpdate()"></textarea>
+        <textarea id="intakeNote" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="服用上の留意点（簡易懸濁、服薬ゼリー等）" oninput="syncUpdate()"></textarea>
+        <textarea id="disease" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="疾患名（主病名／併存疾患）" oninput="syncUpdate()"></textarea>
+        <textarea id="drugTherapyNote" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="薬物治療上の留意点（アレルギー歴／副作用歴／サプリメント・OTC等）" oninput="syncUpdate()"></textarea>
+        <textarea id="labsVitals" class="w-full border p-2 rounded h-20 text-sm" placeholder="薬物治療に関連する検査値・バイタルデータ" oninput="syncUpdate()"></textarea>
+        <div style="text-align:right; margin-top:6px;"><button type="button" onclick="clearSection(this)" style="font-size:11px; color:#64748b;">クリア</button></div>
+      </div>
+
+      <div class="form-card">
+        <label class="block text-xs font-bold text-green-600 mb-2">患者総合評価その他特記事項</label>
+        <textarea id="interviewDate" class="w-full border p-2 rounded h-12 text-sm mb-2" placeholder="① 患者インタビュー日時" oninput="syncUpdate()"></textarea>
+        <textarea id="chiefComplaint" class="w-full border p-2 rounded h-12 text-sm mb-2" placeholder="② 患者の主訴" oninput="syncUpdate()"></textarea>
+        <textarea id="patientHope" class="w-full border p-2 rounded h-12 text-sm mb-2" placeholder="③ 患者の希望" oninput="syncUpdate()"></textarea>
+        <textarea id="nonDrug" class="w-full border p-2 rounded h-12 text-sm mb-2" placeholder="④ 非薬物療法の状況（栄養、運動等）" oninput="syncUpdate()"></textarea>
+        <textarea id="overallEval" class="w-full border p-2 rounded h-16 text-sm" placeholder="⑤ 総合評価その他" oninput="syncUpdate()"></textarea>
+        <div style="text-align:right; margin-top:6px;"><button type="button" onclick="clearSection(this)" style="font-size:11px; color:#64748b;">クリア</button></div>
+      </div>
+
+      <div class="form-card">
+        <label class="block text-xs font-bold text-purple-600 mb-2">2 薬物治療の薬学的評価</label>
+        <textarea id="eval1" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="① 処方された薬剤に対する薬学的評価" oninput="syncUpdate()"></textarea>
+        <textarea id="eval2" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="② 服薬に対する薬学的評価" oninput="syncUpdate()"></textarea>
+        <textarea id="eval3" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="③ 服用効果（治療ゴールとの比較）に対する薬学的評価" oninput="syncUpdate()"></textarea>
+        <textarea id="eval4" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="④ 薬物有害事象" oninput="syncUpdate()"></textarea>
+        <textarea id="eval5" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="⑤ 減薬・薬剤調整の提案内容" oninput="syncUpdate()"></textarea>
+        <textarea id="otherCollab" class="w-full border p-2 rounded h-16 text-sm" placeholder="その他必要な指導／医師との連携として実施した内容（上記提案内容を除く）" oninput="syncUpdate()"></textarea>
+        <div style="text-align:right; margin-top:6px;"><button type="button" onclick="clearSection(this)" style="font-size:11px; color:#64748b;">クリア</button></div>
+      </div>
+
+      <div class="form-card">
+        <label class="block text-xs font-bold text-blue-600 mb-2">3 フォローアップ</label>
+        <textarea id="follow1" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="① 上記提案後の患者インタビューの概要" oninput="syncUpdate()"></textarea>
+        <textarea id="follow2" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="② 患者インタビューを踏まえた効果判定" oninput="syncUpdate()"></textarea>
+        <textarea id="follow3" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="③ 効果判定が良くなかった場合の改善策" oninput="syncUpdate()"></textarea>
+        <textarea id="follow4" class="w-full border p-2 rounded h-14 text-sm" placeholder="④ 患者への伝達内容" oninput="syncUpdate()"></textarea>
+        <div style="text-align:right; margin-top:6px;"><button type="button" onclick="clearSection(this)" style="font-size:11px; color:#64748b;">クリア</button></div>
+      </div>
+
+      <div class="flex gap-2 pb-2 flex-wrap">
+        <button onclick="window.print()" class="flex-grow bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-700 transition-all">PDF保存 / 印刷</button>
+        <button onclick="saveToBrowser()" class="px-4 py-4 border rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-sm font-bold">保存</button>
+        <button onclick="loadFromBrowser(true)" class="px-4 py-4 border rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-sm font-bold">読込</button>
+        <button onclick="clearSavedData()" class="px-4 py-4 border rounded-xl bg-white hover:bg-slate-50 text-slate-600 text-sm font-bold">保存削除</button>
+        <button onclick="clearAll()" class="px-4 py-4 border rounded-xl bg-white hover:bg-slate-50 text-slate-600 text-sm font-bold">全体クリア</button>
+      </div>
+      <div class="text-xs text-slate-500 mb-8">「保存」でこの端末のブラウザに入力内容を保存できます。</div>
+    </div>
+  </aside>
+
+  <main class="main-preview">
+    <div id="preview-sheet" class="preview-wrap"></div>
+  </main>
+</div>
+
+<div id="print-only-container">
+  <div id="print-sheet"></div>
+</div>
+
+<script>
+const STORAGE_KEY = 'medication_total_evaluation_sheet_v1';
+const FIELDS = [
+  'age','gender','heightWeight','organIssue','careLevel','medManager',
+  'understanding','dispenseNote','intakeNote','disease','drugTherapyNote','labsVitals',
+  'interviewDate','chiefComplaint','patientHope','nonDrug','overallEval',
+  'eval1','eval2','eval3','eval4','eval5','otherCollab',
+  'follow1','follow2','follow3','follow4'
+];
+
+function esc(v){
+  return (v || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\n/g, '<br>');
+}
+function clearSection(btn){
+  const card = btn.closest('.form-card');
+  card.querySelectorAll('input, textarea, select').forEach(el => {
+    if(el.tagName === 'SELECT') el.selectedIndex = 0;
+    else el.value = '';
+  });
+  syncUpdate();
+}
+function getFormData(){
+  const data = {};
+  FIELDS.forEach(f => {
+    const el = document.getElementById(f);
+    data[f] = el ? el.value : '';
+  });
+  return data;
+}
+function applyFormData(data){
+  FIELDS.forEach(f => {
+    const el = document.getElementById(f);
+    if(!el || typeof data[f] === 'undefined') return;
+    el.value = data[f];
+  });
+  syncUpdate();
+}
+function saveToBrowser(showMessage = true){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(getFormData()));
+  if(showMessage) alert('入力内容をこのブラウザに保存しました。');
+}
+function loadFromBrowser(showMessage = false){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(!raw){
+    if(showMessage) alert('保存データはありません。');
+    return false;
+  }
+  try{
+    applyFormData(JSON.parse(raw));
+    if(showMessage) alert('保存データを読み込みました。');
+    return true;
+  }catch(e){
+    if(showMessage) alert('保存データを読み込めませんでした。');
+    return false;
+  }
+}
+function clearSavedData(){
+  if(!confirm('このブラウザに保存した入力内容を削除しますか？')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  alert('保存データを削除しました。');
+}
+function clearAll(){
+  if(!confirm('すべての入力内容を消去しますか？')) return;
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    if(el.tagName === 'SELECT') el.selectedIndex = 0;
+    else el.value = '';
+  });
+  syncUpdate();
+}
+
+function generateDocumentHTML(data){
+  return `
+    <div class="page-a4">
+      <div style="font-size:14px; font-weight:700; margin:0 0 12px 0;">服用薬剤総合評価シート</div>
+
+      <table class="doc-table" style="margin-bottom:10px;">
+        <tr><td colspan="6" class="section-head">1　患者情報</td></tr>
+        <tr>
+          <td style="width:10%; font-weight:700;">年齢</td>
+          <td style="width:10%;">${esc(data.age)}</td>
+          <td style="width:16%; font-weight:700;">性別</td>
+          <td style="width:10%;">${esc(data.gender)}</td>
+          <td style="width:18%; font-weight:700;">身長・体重・（体表面積）</td>
+          <td>${esc(data.heightWeight)}</td>
+        </tr>
+        <tr>
+          <td colspan="3" style="font-weight:700;">投与量設計等薬物治療に係る臓器機能障害（腎機能障害の有無等）</td>
+          <td colspan="1">${esc(data.organIssue)}</td>
+          <td style="font-weight:700;">介護度</td>
+          <td>${esc(data.careLevel)} ／ 服薬管理者：${esc(data.medManager)}</td>
+        </tr>
+        <tr><td colspan="6"><span style="font-weight:700;">理解度（病識・服薬アドヒアランス・服薬コンプライアンス等）</span><br>${esc(data.understanding)}</td></tr>
+        <tr><td colspan="6"><span style="font-weight:700;">調剤上の留意点（一包化・粉砕等）</span><br>${esc(data.dispenseNote)}</td></tr>
+        <tr><td colspan="6"><span style="font-weight:700;">服用上の留意点（簡易懸濁、服薬ゼリー等）</span><br>${esc(data.intakeNote)}</td></tr>
+        <tr><td colspan="6"><span style="font-weight:700;">疾患名（主病名／併存疾患）</span><br>${esc(data.disease)}</td></tr>
+        <tr><td colspan="6"><span style="font-weight:700;">薬物治療上の留意点（アレルギー歴／副作用歴／サプリメント・OTC等）</span><br>${esc(data.drugTherapyNote)}</td></tr>
+        <tr>
+          <td colspan="6">
+            <span style="font-weight:700;">薬物治療に関連する検査値・バイタルデータ（必要に応じて経時的記録）</span><br>
+            <span class="tiny">※保険医療機関で発行されている検査値一覧の写しを添付可（特に必要な項目がわかるように整理すること）</span><br>
+            ${esc(data.labsVitals)}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="6">
+            <span style="font-weight:700;">患者総合評価その他特記事項（患者ナラティブデータ、患者インタビュー等を含む）</span><br>
+            <span class="tiny">※収集した情報のローデータ等を添付</span><br><br>
+            ① 患者インタビュー日時：${esc(data.interviewDate)}<br>
+            ② 患者の主訴：${esc(data.chiefComplaint)}<br>
+            ③ 患者の希望：${esc(data.patientHope)}<br>
+            ④ 非薬物療法の状況（栄養、運動等）：${esc(data.nonDrug)}<br>
+            ⑤ 総合評価その他：${esc(data.overallEval)}
+          </td>
+        </tr>
+      </table>
+
+      <table class="doc-table" style="margin-bottom:10px;">
+        <tr><td class="section-head">2　薬物治療の薬学的評価</td></tr>
+        <tr><td>① 処方された薬剤に対する薬学的評価：${esc(data.eval1)}</td></tr>
+        <tr><td>② 服薬に対する薬学的評価：${esc(data.eval2)}</td></tr>
+        <tr><td>③ 服用効果（治療ゴールとの比較）に対する薬学的評価：${esc(data.eval3)}</td></tr>
+        <tr><td>④ 薬物有害事象：${esc(data.eval4)}</td></tr>
+        <tr><td>⑤ 減薬・薬剤調整の提案内容：${esc(data.eval5)}</td></tr>
+        <tr><td>その他必要な指導／医師との連携として実施した内容（上記提案内容を除く）<br>${esc(data.otherCollab)}</td></tr>
+      </table>
+
+      <table class="doc-table">
+        <tr><td class="section-head">3　フォローアップ</td></tr>
+        <tr><td>① 上記提案後の患者インタビューの概要：${esc(data.follow1)}</td></tr>
+      </table>
+    </div>
+
+    <div class="page-a4">
+      <table class="doc-table" style="margin-bottom:12px;">
+        <tr><td class="section-head">3　フォローアップ（続き）</td></tr>
+        <tr><td>② 患者インタビューを踏まえた効果判定：${esc(data.follow2)}</td></tr>
+        <tr><td>③ 効果判定が良くなかった場合の改善策：${esc(data.follow3)}</td></tr>
+        <tr><td>④ 患者への伝達内容：${esc(data.follow4)}</td></tr>
+      </table>
+
+      <div style="font-size:9px; line-height:1.6; margin-top:16px;">
+        <div style="font-weight:700;">［記載上の注意］</div>
+        <div>1　保険医療機関に対し、本様式を送付すること。ただし、「服用薬剤総合評価シート」については、この限りでない。</div>
+        <div>2　「服用薬剤総合評価シート」については、保険医療機関の求めに応じて当該保険医療機関に送付すること。</div>
+        <div>3　本様式の作成後、薬剤服用歴に添付して保管すること。</div>
+      </div>
+    </div>
+  `;
+}
+
+function syncUpdate(){
+  const data = getFormData();
+  const html = generateDocumentHTML(data);
+  document.getElementById('preview-sheet').innerHTML = html;
+  document.getElementById('print-sheet').innerHTML = html;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Enter'){
+    const el = document.activeElement;
+    if(!el) return;
+    if(el.tagName === 'TEXTAREA') return;
+    e.preventDefault();
+    const focusables = Array.from(document.querySelectorAll('input, select, textarea, button'))
+      .filter(el => !el.disabled && el.offsetParent !== null && el.type !== 'hidden');
+    const idx = focusables.indexOf(el);
+    if(idx > -1 && idx < focusables.length - 1) focusables[idx + 1].focus();
+  }
+});
+window.onload = () => {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(raw){
+    try{
+      applyFormData(JSON.parse(raw));
+      syncUpdate();
+      return;
+    }catch(e){}
+  }
+  syncUpdate();
+};
+</script>
+</body>
+</html>
