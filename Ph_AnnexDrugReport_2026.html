@@ -51,12 +51,21 @@
     <h1 class="text-xl font-bold mb-4 border-b pb-2 text-slate-800">服用薬剤総合評価シート 作成</h1>
 
     <div class="space-y-3">
+<div style="background:#f8fafc; border:1px solid #cbd5f5; padding:10px; border-radius:6px; margin-bottom:12px; font-size:12px;">
+<b>入力のポイント</b><br>
+・左側のフォームに入力すると、右側の用紙に反映されます。<br>
+・Enterキーで次の入力欄へ移動できます。<br>
+・各ブロックの「クリア」で部分的に削除できます。<br>
+・「保存」で入力内容をこの端末に保存できます。<br>
+・最終的に「PDF保存 / 印刷」で提出用に出力してください。
+</div>
+
       <div class="form-card">
         <label class="block text-xs font-bold text-blue-600 mb-2">1 患者情報（基本）</label>
-        <div class="grid grid-cols-3 gap-2 mb-2">
-          <input type="text" id="age" placeholder="年齢" class="border p-2 rounded text-sm" oninput="syncUpdate()">
-          <input type="text" id="gender" placeholder="性別" class="border p-2 rounded text-sm" oninput="syncUpdate()">
-          <input type="text" id="heightWeight" placeholder="身長・体重・(体表面積)" class="border p-2 rounded text-sm" oninput="syncUpdate()">
+        <div class="grid grid-cols-3 gap-2 mb-2 text-xs">
+          <div><label class="block text-slate-600 mb-1">年齢</label><input type="text" id="age" class="border p-2 rounded text-sm w-full" oninput="syncUpdate()"></div>
+          <div><label class="block text-slate-600 mb-1">性別</label><input type="text" id="gender" class="border p-2 rounded text-sm w-full" oninput="syncUpdate()"></div>
+          <div><label class="block text-slate-600 mb-1">身長・体重・(体表面積)</label><input type="text" id="heightWeight" class="border p-2 rounded text-sm w-full" oninput="syncUpdate()"></div>
         </div>
         <div class="grid grid-cols-3 gap-2 mb-2">
           <input type="text" id="organIssue" placeholder="投与量設計等薬物治療に係る臓器機能障害" class="border p-2 rounded text-sm" oninput="syncUpdate()">
