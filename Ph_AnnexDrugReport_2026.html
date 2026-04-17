@@ -221,10 +221,11 @@ function generateDocumentHTML(data){
           <td>${esc(data.heightWeight)}</td>
         </tr>
         <tr>
-          <td colspan="3" style="font-weight:700;">投与量設計等薬物治療に係る臓器機能障害（腎機能障害の有無等）</td>
+          <td colspan="2" style="font-weight:700;">投与量設計等薬物治療に係る臓器機能障害（腎機能障害の有無等）</td>
           <td colspan="1">${esc(data.organIssue)}</td>
           <td style="font-weight:700;">介護度</td>
-          <td>${esc(data.careLevel)} ／ 服薬管理者：${esc(data.medManager)}</td>
+          <td colspan="1">${esc(data.careLevel)}</td>
+          <td style="font-weight:700;">服薬管理者：${esc(data.medManager)}</td>
         </tr>
         <tr><td colspan="6"><span style="font-weight:700;">理解度（病識・服薬アドヒアランス・服薬コンプライアンス等）</span><br>${esc(data.understanding)}</td></tr>
         <tr><td colspan="6"><span style="font-weight:700;">調剤上の留意点（一包化・粉砕等）</span><br>${esc(data.dispenseNote)}</td></tr>
