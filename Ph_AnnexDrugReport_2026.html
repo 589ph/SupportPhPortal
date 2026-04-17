@@ -9,9 +9,9 @@
   <style>
     body { font-family: 'Noto Sans JP', sans-serif; background:#f1f5f9; margin:0; }
     @media screen {
-      .app-container { display:flex; min-height:100vh; overflow:hidden; }
-      .side-form { width:560px; background:#fff; padding:24px; overflow-y:auto; box-shadow:4px 0 15px rgba(0,0,0,.08); z-index:10; }
-      .main-preview { flex-grow:1; padding:20px; background:#e2e8f0; display:flex; justify-content:center; overflow:auto; }
+      .app-container { display:flex; height:100vh; overflow:hidden; }
+      .side-form { width:560px; height:100vh; background:#fff; padding:24px; overflow-y:auto; box-shadow:4px 0 15px rgba(0,0,0,.08); z-index:10; box-sizing:border-box; }
+      .main-preview { flex-grow:1; height:100vh; padding:20px; background:#e2e8f0; display:flex; justify-content:center; overflow:auto; box-sizing:border-box; }
       .preview-wrap { width:210mm; transform-origin:top center; }
       .page-a4 {
         width:210mm; min-height:297mm; background:#fff; padding:14mm 14mm 12mm 14mm;
@@ -42,6 +42,7 @@
     .section-head { font-weight:700; }
     .small { font-size:9px; }
     .tiny { font-size:8.5px; }
+    .field-label { display:block; font-size:12px; color:#475569; margin-bottom:4px; font-weight:600; }
   </style>
 </head>
 <body>
@@ -63,9 +64,9 @@
       <div class="form-card">
         <label class="block text-xs font-bold text-blue-600 mb-2">1 患者情報（基本）</label>
         <div class="grid grid-cols-3 gap-2 mb-2 text-xs">
-          <div><label class="block text-slate-600 mb-1">年齢</label><input type="text" id="age" class="border p-2 rounded text-sm w-full" oninput="syncUpdate()"></div>
-          <div><label class="block text-slate-600 mb-1">性別</label><input type="text" id="gender" class="border p-2 rounded text-sm w-full" oninput="syncUpdate()"></div>
-          <div><label class="block text-slate-600 mb-1">身長・体重・(体表面積)</label><input type="text" id="heightWeight" class="border p-2 rounded text-sm w-full" oninput="syncUpdate()"></div>
+          <div><label class="block text-slate-600 mb-1">年齢</label><input type="text" id="age" class="border p-2 rounded text-sm w-full" placeholder="例：78歳" oninput="syncUpdate()"></div>
+          <div><label class="block text-slate-600 mb-1">性別</label><input type="text" id="gender" class="border p-2 rounded text-sm w-full" placeholder="例：女性" oninput="syncUpdate()"></div>
+          <div><label class="block text-slate-600 mb-1">身長・体重・(体表面積)</label><input type="text" id="heightWeight" class="border p-2 rounded text-sm w-full" placeholder="例：160cm・52kg（1.52㎡）" oninput="syncUpdate()"></div>
         </div>
         <div class="grid grid-cols-3 gap-2 mb-2">
           <input type="text" id="organIssue" placeholder="投与量設計等薬物治療に係る臓器機能障害" class="border p-2 rounded text-sm" oninput="syncUpdate()">
@@ -77,37 +78,37 @@
         <textarea id="intakeNote" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="服用上の留意点（簡易懸濁、服薬ゼリー等）" oninput="syncUpdate()"></textarea>
         <textarea id="disease" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="疾患名（主病名／併存疾患）" oninput="syncUpdate()"></textarea>
         <textarea id="drugTherapyNote" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="薬物治療上の留意点（アレルギー歴／副作用歴／サプリメント・OTC等）" oninput="syncUpdate()"></textarea>
-        <textarea id="labsVitals" class="w-full border p-2 rounded h-20 text-sm" placeholder="薬物治療に関連する検査値・バイタルデータ" oninput="syncUpdate()"></textarea>
+        <textarea id="labsVitals" class="w-full border p-2 rounded h-20 text-sm" placeholder="例：BP 128/74、HbA1c 7.2%、Scr 1.1" placeholder="薬物治療に関連する検査値・バイタルデータ" oninput="syncUpdate()"></textarea>
         <div style="text-align:right; margin-top:6px;"><button type="button" onclick="clearSection(this)" style="font-size:11px; color:#64748b;">クリア</button></div>
       </div>
 
       <div class="form-card">
         <label class="block text-xs font-bold text-green-600 mb-2">患者総合評価その他特記事項</label>
-        <textarea id="interviewDate" class="w-full border p-2 rounded h-12 text-sm mb-2" placeholder="① 患者インタビュー日時" oninput="syncUpdate()"></textarea>
-        <textarea id="chiefComplaint" class="w-full border p-2 rounded h-12 text-sm mb-2" placeholder="② 患者の主訴" oninput="syncUpdate()"></textarea>
-        <textarea id="patientHope" class="w-full border p-2 rounded h-12 text-sm mb-2" placeholder="③ 患者の希望" oninput="syncUpdate()"></textarea>
-        <textarea id="nonDrug" class="w-full border p-2 rounded h-12 text-sm mb-2" placeholder="④ 非薬物療法の状況（栄養、運動等）" oninput="syncUpdate()"></textarea>
-        <textarea id="overallEval" class="w-full border p-2 rounded h-16 text-sm" placeholder="⑤ 総合評価その他" oninput="syncUpdate()"></textarea>
+        <div class="mb-2"><label class="field-label">① 患者インタビュー日時</label><textarea id="interviewDate" class="w-full border p-2 rounded h-12 text-sm" placeholder="例：2026/04/17 14:00" oninput="syncUpdate()"></textarea></div>
+        <div class="mb-2"><label class="field-label">② 患者の主訴</label><textarea id="chiefComplaint" class="w-full border p-2 rounded h-12 text-sm" placeholder="例：薬が多くて飲み切れない" oninput="syncUpdate()"></textarea></div>
+        <div class="mb-2"><label class="field-label">③ 患者の希望</label><textarea id="patientHope" class="w-full border p-2 rounded h-12 text-sm" placeholder="例：眠気の少ない治療にしたい" oninput="syncUpdate()"></textarea></div>
+        <div class="mb-2"><label class="field-label">④ 非薬物療法の状況（栄養、運動等）</label><textarea id="nonDrug" class="w-full border p-2 rounded h-12 text-sm" placeholder="例：減塩中、週2回散歩" oninput="syncUpdate()"></textarea></div>
+        <div><label class="field-label">⑤ 総合評価その他</label><textarea id="overallEval" class="w-full border p-2 rounded h-16 text-sm" placeholder="例：服薬負担が高く、整理の余地あり" oninput="syncUpdate()"></textarea></div>
         <div style="text-align:right; margin-top:6px;"><button type="button" onclick="clearSection(this)" style="font-size:11px; color:#64748b;">クリア</button></div>
       </div>
 
       <div class="form-card">
         <label class="block text-xs font-bold text-purple-600 mb-2">2 薬物治療の薬学的評価</label>
-        <textarea id="eval1" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="① 処方された薬剤に対する薬学的評価" oninput="syncUpdate()"></textarea>
-        <textarea id="eval2" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="② 服薬に対する薬学的評価" oninput="syncUpdate()"></textarea>
-        <textarea id="eval3" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="③ 服用効果（治療ゴールとの比較）に対する薬学的評価" oninput="syncUpdate()"></textarea>
-        <textarea id="eval4" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="④ 薬物有害事象" oninput="syncUpdate()"></textarea>
-        <textarea id="eval5" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="⑤ 減薬・薬剤調整の提案内容" oninput="syncUpdate()"></textarea>
-        <textarea id="otherCollab" class="w-full border p-2 rounded h-16 text-sm" placeholder="その他必要な指導／医師との連携として実施した内容（上記提案内容を除く）" oninput="syncUpdate()"></textarea>
+        <div class="mb-2"><label class="field-label">① 処方された薬剤に対する薬学的評価</label><textarea id="eval1" class="w-full border p-2 rounded h-14 text-sm" placeholder="例：重複処方や相互作用は現時点で大きな問題なし" oninput="syncUpdate()"></textarea></div>
+        <div class="mb-2"><label class="field-label">② 服薬に対する薬学的評価</label><textarea id="eval2" class="w-full border p-2 rounded h-14 text-sm" placeholder="例：昼薬の飲み忘れが多い" oninput="syncUpdate()"></textarea></div>
+        <div class="mb-2"><label class="field-label">③ 服用効果（治療ゴールとの比較）に対する薬学的評価</label><textarea id="eval3" class="w-full border p-2 rounded h-14 text-sm" placeholder="例：血圧コントロールは概ね良好" oninput="syncUpdate()"></textarea></div>
+        <div class="mb-2"><label class="field-label">④ 薬物有害事象</label><textarea id="eval4" class="w-full border p-2 rounded h-14 text-sm" placeholder="例：ふらつき、便秘を認める" oninput="syncUpdate()"></textarea></div>
+        <div class="mb-2"><label class="field-label">⑤ 減薬・薬剤調整の提案内容</label><textarea id="eval5" class="w-full border p-2 rounded h-14 text-sm" placeholder="例：睡眠薬の減量を提案" oninput="syncUpdate()"></textarea></div>
+        <div><label class="field-label">その他必要な指導／医師との連携として実施した内容（上記提案内容を除く）</label><textarea id="otherCollab" class="w-full border p-2 rounded h-16 text-sm" placeholder="例：主治医へ情報提供、家族へ服薬支援指導" oninput="syncUpdate()"></textarea></div>
         <div style="text-align:right; margin-top:6px;"><button type="button" onclick="clearSection(this)" style="font-size:11px; color:#64748b;">クリア</button></div>
       </div>
 
       <div class="form-card">
         <label class="block text-xs font-bold text-blue-600 mb-2">3 フォローアップ</label>
-        <textarea id="follow1" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="① 上記提案後の患者インタビューの概要" oninput="syncUpdate()"></textarea>
-        <textarea id="follow2" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="② 患者インタビューを踏まえた効果判定" oninput="syncUpdate()"></textarea>
-        <textarea id="follow3" class="w-full border p-2 rounded h-14 text-sm mb-2" placeholder="③ 効果判定が良くなかった場合の改善策" oninput="syncUpdate()"></textarea>
-        <textarea id="follow4" class="w-full border p-2 rounded h-14 text-sm" placeholder="④ 患者への伝達内容" oninput="syncUpdate()"></textarea>
+        <div class="mb-2"><label class="field-label">① 上記提案後の患者インタビューの概要</label><textarea id="follow1" class="w-full border p-2 rounded h-14 text-sm" placeholder="例：減薬後、眠気が軽減したと本人より聴取" oninput="syncUpdate()"></textarea></div>
+        <div class="mb-2"><label class="field-label">② 患者インタビューを踏まえた効果判定</label><textarea id="follow2" class="w-full border p-2 rounded h-14 text-sm" placeholder="例：服薬継続率が改善" oninput="syncUpdate()"></textarea></div>
+        <div class="mb-2"><label class="field-label">③ 効果判定が良くなかった場合の改善策</label><textarea id="follow3" class="w-full border p-2 rounded h-14 text-sm" placeholder="例：再提案として服用時点の簡素化を検討" oninput="syncUpdate()"></textarea></div>
+        <div><label class="field-label">④ 患者への伝達内容</label><textarea id="follow4" class="w-full border p-2 rounded h-14 text-sm" placeholder="例：変更内容と副作用観察点を説明" oninput="syncUpdate()"></textarea></div>
         <div style="text-align:right; margin-top:6px;"><button type="button" onclick="clearSection(this)" style="font-size:11px; color:#64748b;">クリア</button></div>
       </div>
 
@@ -224,7 +225,7 @@ function generateDocumentHTML(data){
           <td colspan="2" style="font-weight:700;">投与量設計等薬物治療に係る臓器機能障害（腎機能障害の有無等）</td>
           <td colspan="1">${esc(data.organIssue)}</td>
           <td style="font-weight:700;">介護度</td>
-          <td colspan="1">${esc(data.careLevel)}</td>
+          td colspan="1">${esc(data.careLevel)}</td>
           <td style="font-weight:700;">服薬管理者：${esc(data.medManager)}</td>
         </tr>
         <tr><td colspan="6"><span style="font-weight:700;">理解度（病識・服薬アドヒアランス・服薬コンプライアンス等）</span><br>${esc(data.understanding)}</td></tr>
