@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>服用薬剤調整支援料2に係る情報提供書（別添様式2）</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans JP', sans-serif; background:#f1f5f9; margin:0; }
+    @media screen {
+      .app-container { display:flex; height:100vh; overflow:hidden; }
+      .side-form { width:540px; height:100vh; background:#fff; padding:24px; overflow-y:auto; box-shadow:4px 0 15px rgba(0,0,0,.08); z-index:10; box-sizing:border-box; }
+      .main-preview { flex-grow:1; height:100vh; padding:20px; background:#e2e8f0; display:flex; justify-content:center; overflow:auto; box-sizing:border-box; }
+      .preview-wrap { width:210mm; transform-origin:top center; }
+      .page-a4 {
+        width:210mm; min-height:297mm; background:#fff; padding:15mm 16mm 12mm 16mm;
+        box-sizing:border-box; box-shadow:0 10px 30px rgba(0,0,0,.12); margin-bottom:20px;
+      }
+      @media (max-width:1450px){ .preview-wrap { transform:scale(.82); } }
+      @media (max-width:1100px){ .preview-wrap { transform:scale(.64); } }
+      #print-only-container { display:none; }
+    }
+    @media print {
+      @page { size:A4; margin:0; }
+      body { background:#fff !important; }
+      .app-container, .no-print { display:none !important; }
+      #print-only-container { display:block !important; width:210mm !important; background:#fff !important; }
+      .page-a4 {
+        width:210mm !important; min-height:297mm !important; height:297mm !important;
+        padding:15mm 16mm 12mm 16mm !important; box-sizing:border-box !important;
+        box-shadow:none !important; margin:0 !important; overflow:hidden !important;
+        page-break-after:always;
+      }
+      table, td, th { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    }
+    .form-card { background:#fff; border-radius:8px; padding:14px; border:1px solid #e2e8f0; margin-bottom:12px; }
+    .doc-table { width:100%; border-collapse:collapse; border:1.2px solid #111; table-layout:fixed; }
+    .doc-table td, .doc-table th {
+      border:1px solid #111; padding:4px 5px; vertical-align:top; font-size:10.5px; color:#111; word-wrap:break-word; line-height:1.25;
+    }
+    .label-cell { background:#fff; font-weight:700; width:90px; }
+    .uline {
+      display:inline-block; border-bottom:1px solid #111; min-height:1.1em; vertical-align:bottom; padding:0 2px 1px 2px;
+    }
+    .tiny { font-size:8.8px; }
+    .small { font-size:10px; }
+    .field-label { display:block; font-size:12px; color:#475569; margin-bottom:4px; font-weight:600; }
+  </style>
+</head>
+<body>
+
+<div class="app-container no-print">
+  <aside class="side-form">
+    <h1 class="text-xl font-bold mb-4 border-b pb-2 text-slate-800">服用薬剤調整支援料2に係る情報提供書（別添様式2） 作成</h1>
+
+    <div class="space-y-3">
+      <div class="form-card">
+        <label class="block text-xs font-bold text-blue-600 mb-2">基本情報・情報提供先</label>
+        <div class="mb-2"><label class="field-label">作成日</label><input type="date" id="date" class="w-full border p-2 rounded text-sm" oninput="syncUpdate()"></div>
+        <div class="mb-2"><label class="field-label">情報提供先保険医療機関名</label><input type="text" id="toHospital" class="w-full border p-2 rounded text-sm" placeholder="例：○○病院" oninput="syncUpdate()"></div>
+        <div><label class="field-label">診療科</label><input type="text" id="toDepartment" class="w-full border p-2 rounded text-sm" placeholder="例：内科" oninput="syncUpdate()"></div>
+        <div style="text-align:right; margin-top:6px;"><button type="button" onclick="clearSection(this)" style="font-size:11px; color:#64748b;">クリア</button></div>
+      </div>
+
+      <div class="form-card">
+        <label class="block text-xs font-bold text-green-600 mb-2">情報提供元（保険薬局）</label>
+        <div class="mb-1"><label class="field-label">所在地</label><input type="text" id="fromAddress" class="w-full border p-2 rounded text-sm" placeholder="例：長崎県諫早市○○" oninput="syncUpdate()"></div>
+        <div class="mb-1"><label class="field-label">薬局名</label><input type="text" id="fromPharmacy" class="w-full border p-2 rounded text-sm" placeholder="例：○○薬局" oninput="syncUpdate()"></div>
+        <div class="mb-1"><label class="field-label">電話</label><input type="text" id="fromPhone" class="w-full border p-2 rounded text-sm" placeholder="例：0957-xx-xxxx" oninput="syncUpdate()"></div>
+        <div class="mb-1"><label class="field-label">FAX</label><input type="text" id="fromFax" class="w-full border p-2 rounded text-sm" placeholder="例：0957-xx-xxxx" oninput="syncUpdate()"></div>
+        <div><label class="field-label">保険薬剤師氏名</label><input type="text" id="pharmacistName" class="w-full border p-2 rounded text-sm" placeholder="例：山田 太郎" oninput="syncUpdate()"></div>
+        <div style="text-align:right; margin-top:6px;"><button type="button" onclick="clearSection(this)" style="font-size:11px; color:#64748b;">クリア</button></div>
+      </div>
+
+      <div class="form-card">
+        <label class="block text-xs font-bold text-slate-500 mb-2">患者情報</label>
+        <div class="mb-2"><label class="field-label">患者氏名</label><input type="text" id="patientName" class="w-full border p-2 rounded text-sm font-bold" placeholder="例：山田 花子" oninput="syncUpdate()"></div>
+        <div class="grid grid-cols-2 gap-2 mb-2">
+          <div><label class="field-label">性別</label><select id="patientGender" class="border p-2 rounded text-sm w-full" onchange="syncUpdate()">
+            <option value=""></option><option value="男">男</option><option value="女">女</option>
+          </select>
+          <div><label class="field-label">年齢</label><input type="number" id="patientAge" class="border p-2 rounded text-sm w-full" placeholder="例：78" oninput="syncUpdate()"></div>
+        </div>
+        <div class="mb-1"><label class="field-label">生年月日（西暦入力）</label><input type="date" id="patientBirthdayInput" class="w-full border p-2 rounded text-sm" oninput="handleBirthday(this.value)"></div>
+        <div class="mb-2"><label class="field-label">生年月日（和暦表示）</label><input type="text" id="patientBirthday" class="w-full border p-2 rounded bg-slate-50 text-sm" placeholder="例：令和○年○月○日" oninput="syncUpdate()"></div>
+        <div class="mb-2"><label class="field-label">住所</label><input type="text" id="patientAddress" class="w-full border p-2 rounded text-sm" placeholder="例：長崎県諫早市○○" oninput="syncUpdate()"></div>
+        <div><label class="field-label">電話番号</label><input type="text" id="patientPhone" class="w-full border p-2 rounded text-sm" placeholder="例：090-xxxx-xxxx" oninput="syncUpdate()"></div>
+        <div style="text-align:right; margin-top:6px;"><button type="button" onclick="clearSection(this)" style="font-size:11px; color:#64748b;">クリア</button></div>
+      </div>
+
+      <div class="form-card">
+        <label class="block text-xs font-bold text-purple-600 mb-2">相談内容</label>
+        <div class="mb-2"><label class="field-label">対象薬剤</label><textarea id="targetDrugs" class="w-full border p-2 rounded h-16 text-sm" placeholder="例：ベンゾジアゼピン系薬剤" oninput="syncUpdate()"></textarea></div>
+        <div class="mb-2"><label class="field-label">ご相談内容</label><textarea id="consultation" class="w-full border p-2 rounded h-20 text-sm" placeholder="例：眠気・ふらつきのため減量検討希望" oninput="syncUpdate()"></textarea></div>
+        <div class="text-sm mb-2">
+          <span class="font-bold text-slate-700">事前電話相談の有無：</span>
+          <label class="mr-4"><input type="radio" name="phoneConsult" id="phoneYes" value="有" onchange="syncUpdate()"> 有</label>
+          <label><input type="radio" name="phoneConsult" id="phoneNo" value="無" onchange="syncUpdate()"> 無</label>
+        </div>
+        <div style="text-align:right; margin-top:6px;"><button type="button" onclick="clearSection(this)" style="font-size:11px; color:#64748b;">クリア</button></div>
+      </div>
+
+      <div class="form-card">
+        <label class="block text-xs font-bold text-blue-600 mb-2">1 受診中の他の保険医療機関、診療科等</label>
+        <div class="grid grid-cols-4 gap-2 text-[11px] mb-1 font-bold text-slate-600">
+          <div>番号</div><div>保険医療機関名</div><div>診療科</div><div>疾患名等</div>
+        </div>
+        <div id="institutionInputs"></div>
+        <div style="text-align:right; margin-top:6px;"><button type="button" onclick="clearInstitutionRows()" style="font-size:11px; color:#64748b;">クリア</button></div>
+      </div>
+
+      <div class="form-card">
+        <label class="block text-xs font-bold text-blue-600 mb-2">2 現在服用中の薬剤の一覧</label>
+        <div class="grid grid-cols-[1.4fr_1.6fr_1fr_0.9fr_88px] gap-2 text-[11px] mb-1 font-bold text-slate-600">
+          <div>医薬品名</div><div>服用目的</div><div>服用開始時期</div><div>処方医療機関番号</div><div>操作</div>
+        </div>
+        <div id="medicationInputs"></div>
+        <div class="flex justify-between items-center mt-2 flex-wrap gap-2">
+          <button type="button" onclick="addMedicationRow()" class="text-sm px-3 py-1 border rounded bg-white hover:bg-slate-50 text-slate-700">＋ 薬剤欄を追加</button>
+          <button type="button" onclick="clearMedicationRows()" style="font-size:11px; color:#64748b;">クリア</button>
+        </div>
+      </div>
+
+      <div class="flex gap-2 pb-2 flex-wrap">
+        <button onclick="window.print()" class="flex-grow bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-700 transition-all">PDF保存 / 印刷</button>
+        <button onclick="saveToBrowser()" class="px-4 py-4 border rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-sm font-bold">保存</button>
+        <button onclick="loadFromBrowser(true)" class="px-4 py-4 border rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-sm font-bold">読込</button>
+        <button onclick="clearSavedData()" class="px-4 py-4 border rounded-xl bg-white hover:bg-slate-50 text-slate-600 text-sm font-bold">保存削除</button>
+        <button onclick="clearAll()" class="px-4 py-4 border rounded-xl bg-white hover:bg-slate-50 text-slate-600 text-sm font-bold">全体クリア</button>
+      </div>
+      <div class="text-xs text-slate-500 mb-8">「保存」でこの端末のブラウザに入力内容を保存できます。</div>
+    </div>
+  </aside>
+
+  <main class="main-preview">
+    <div id="preview-sheet" class="preview-wrap"></div>
+  </main>
+</div>
+
+<div id="print-only-container">
+  <div id="print-sheet"></div>
+</div>
+
+<script>
+const STORAGE_KEY = 'adjust_support_fee2_form_v1';
+let medRowCount = 8;
+const FIELDS = [
+  'date','toHospital','toDepartment',
+  'fromAddress','fromPharmacy','fromPhone','fromFax','pharmacistName',
+  'patientName','patientGender','patientAge','patientBirthday','patientAddress','patientPhone',
+  'targetDrugs','consultation'
+];
+
+function esc(v){
+  return (v || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\n/g, '<br>');
+}
+function getWareki(dateStr){
+  if(!dateStr) return "";
+  const d = new Date(dateStr);
+  if(isNaN(d.getTime())) return dateStr;
+  const year = d.getFullYear();
+  const month = d.getMonth() + 1;
+  const day = d.getDate();
+  let era = "", eraYear = 0;
+  if(year >= 2019){ era = "令和"; eraYear = year - 2018; }
+  else if(year >= 1989){ era = "平成"; eraYear = year - 1988; }
+  else if(year >= 1926){ era = "昭和"; eraYear = year - 1925; }
+  else return `${year}年${month}月${day}日`;
+  return `${era}${eraYear === 1 ? "元" : eraYear}年${month}月${day}日`;
+}
+function handleBirthday(val){
+  if(!val) return;
+  document.getElementById('patientBirthday').value = getWareki(val);
+  const birth = new Date(val);
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+  if(today.getMonth() < birth.getMonth() || (today.getMonth() === birth.getMonth() && today.getDate() < birth.getDate())) age--;
+  document.getElementById('patientAge').value = age;
+  syncUpdate();
+}
+function clearSection(btn){
+  const card = btn.closest('.form-card');
+  card.querySelectorAll('input, textarea, select').forEach(el => {
+    if(el.type === 'radio') el.checked = false;
+    else if(el.tagName === 'SELECT') el.selectedIndex = 0;
+    else el.value = '';
+  });
+  syncUpdate();
+}
+function createInstitutionInputs(){
+  const wrap = document.getElementById('institutionInputs');
+  let html = '';
+  for(let i=1;i<=3;i++){
+    html += `
+      <div class="grid grid-cols-4 gap-2 mb-2">
+        <input type="text" id="inst_no_${i}" class="border p-2 rounded text-sm bg-slate-50" readonly value="${i}">
+        <input type="text" id="inst_name_${i}" placeholder="保険医療機関名" class="border p-2 rounded text-sm" oninput="syncUpdate()">
+        <input type="text" id="inst_dept_${i}" placeholder="診療科" class="border p-2 rounded text-sm" oninput="syncUpdate()">
+        <input type="text" id="inst_disease_${i}" placeholder="疾患名等" class="border p-2 rounded text-sm" oninput="syncUpdate()">
+      </div>`;
+  }
+  wrap.innerHTML = html;
+}
+function createMedicationInputs(){
+  const wrap = document.getElementById('medicationInputs');
+  let html = '';
+  for(let i=1;i<=medRowCount;i++){
+    html += `
+      <div class="grid grid-cols-[1.4fr_1.6fr_1fr_0.9fr_88px] gap-2 mb-2">
+        <input type="text" id="med_name_${i}" placeholder="医薬品名" class="border p-2 rounded text-sm" oninput="syncUpdate()">
+        <input type="text" id="med_purpose_${i}" placeholder="服用目的" class="border p-2 rounded text-sm" oninput="syncUpdate()">
+        <input type="text" id="med_start_${i}" placeholder="服用開始時期" class="border p-2 rounded text-sm" oninput="syncUpdate()">
+        <input type="text" id="med_inst_${i}" placeholder="番号" class="border p-2 rounded text-sm" oninput="syncUpdate()">
+        <button type="button" onclick="removeMedicationRow(${i})" class="text-xs text-red-500">削除</button>
+      </div>`;
+  }
+  wrap.innerHTML = html;
+}
+function addMedicationRow(){
+  const data = getFormData();
+  medRowCount += 1;
+  createMedicationInputs();
+  applyFormData(data);
+  syncUpdate();
+}
+function removeMedicationRow(index){
+  if(medRowCount <= 1) return;
+  if(!confirm('本当に削除しますか？')) return;
+  const data = getFormData();
+  data.meds.splice(index-1,1);
+  medRowCount = Math.max(1, data.meds.length);
+  createMedicationInputs();
+  applyFormData(data);
+}
+function clearInstitutionRows(){
+  for(let i=1;i<=3;i++){
+    ['name','dept','disease'].forEach(k => {
+      const el = document.getElementById(`inst_${k}_${i}`);
+      if(el) el.value = '';
+    });
+  }
+  syncUpdate();
+}
+function clearMedicationRows(){
+  for(let i=1;i<=medRowCount;i++){
+    ['name','purpose','start','inst'].forEach(k => {
+      const el = document.getElementById(`med_${k}_${i}`);
+      if(el) el.value = '';
+    });
+  }
+  syncUpdate();
+}
+function getPhoneConsult(){
+  if(document.getElementById('phoneYes').checked) return '有';
+  if(document.getElementById('phoneNo').checked) return '無';
+  return '';
+}
+function getFormData(){
+  const data = {};
+  FIELDS.forEach(f => {
+    const el = document.getElementById(f);
+    data[f] = el ? el.value : '';
+  });
+  data.phoneConsult = getPhoneConsult();
+  data.medRowCount = medRowCount;
+  data.institutions = [];
+  for(let i=1;i<=3;i++){
+    data.institutions.push({
+      name: document.getElementById(`inst_name_${i}`)?.value || '',
+      dept: document.getElementById(`inst_dept_${i}`)?.value || '',
+      disease: document.getElementById(`inst_disease_${i}`)?.value || ''
+    });
+  }
+  data.meds = [];
+  for(let i=1;i<=medRowCount;i++){
+    data.meds.push({
+      name: document.getElementById(`med_name_${i}`)?.value || '',
+      purpose: document.getElementById(`med_purpose_${i}`)?.value || '',
+      start: document.getElementById(`med_start_${i}`)?.value || '',
+      inst: document.getElementById(`med_inst_${i}`)?.value || ''
+    });
+  }
+  return data;
+}
+function applyFormData(data){
+  if(data.medRowCount && data.medRowCount > medRowCount) medRowCount = data.medRowCount;
+  if(Array.isArray(data.meds) && data.meds.length > medRowCount) medRowCount = data.meds.length;
+  createMedicationInputs();
+  FIELDS.forEach(f => {
+    const el = document.getElementById(f);
+    if(el && typeof data[f] !== 'undefined') el.value = data[f];
+  });
+  document.getElementById('phoneYes').checked = data.phoneConsult === '有';
+  document.getElementById('phoneNo').checked = data.phoneConsult === '無';
+  if(Array.isArray(data.institutions)){
+    data.institutions.forEach((row, idx) => {
+      const i = idx + 1;
+      if(document.getElementById(`inst_name_${i}`)) document.getElementById(`inst_name_${i}`).value = row.name || '';
+      if(document.getElementById(`inst_dept_${i}`)) document.getElementById(`inst_dept_${i}`).value = row.dept || '';
+      if(document.getElementById(`inst_disease_${i}`)) document.getElementById(`inst_disease_${i}`).value = row.disease || '';
+    });
+  }
+  if(Array.isArray(data.meds)){
+    data.meds.forEach((row, idx) => {
+      const i = idx + 1;
+      if(document.getElementById(`med_name_${i}`)) document.getElementById(`med_name_${i}`).value = row.name || '';
+      if(document.getElementById(`med_purpose_${i}`)) document.getElementById(`med_purpose_${i}`).value = row.purpose || '';
+      if(document.getElementById(`med_start_${i}`)) document.getElementById(`med_start_${i}`).value = row.start || '';
+      if(document.getElementById(`med_inst_${i}`)) document.getElementById(`med_inst_${i}`).value = row.inst || '';
+    });
+  }
+  syncUpdate();
+}
+function saveToBrowser(showMessage = true){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(getFormData()));
+  if(showMessage) alert('入力内容をこのブラウザに保存しました。');
+}
+function loadFromBrowser(showMessage = false){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(!raw){
+    if(showMessage) alert('保存データはありません。');
+    return false;
+  }
+  try{
+    applyFormData(JSON.parse(raw));
+    if(showMessage) alert('保存データを読み込みました。');
+    return true;
+  }catch(e){
+    if(showMessage) alert('保存データを読み込めませんでした。');
+    return false;
+  }
+}
+function clearSavedData(){
+  if(!confirm('このブラウザに保存した入力内容を削除しますか？')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  alert('保存データを削除しました。');
+}
+function clearAll(){
+  if(!confirm('すべての入力内容を消去しますか？')) return;
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    if(el.id === 'date') return;
+    if(el.type === 'radio') el.checked = false;
+    else if(el.tagName === 'SELECT') el.selectedIndex = 0;
+    else el.value = '';
+  });
+  medRowCount = 8;
+  createMedicationInputs();
+  syncUpdate();
+}
+
+function generateDocumentHTML(data){
+  const dateDisplay = data.date ? getWareki(data.date) : '令和　年　月　日';
+  const institutionRows = data.institutions.map((r, idx) => `
+    <tr>
+      <td style="text-align:center;">${idx+1}</td>
+      <td>${esc(r.name)}</td>
+      <td>${esc(r.dept)}</td>
+      <td>${esc(r.disease)}</td>
+    </tr>
+  `).join('');
+  const medRows = data.meds.map(r => `
+    <tr>
+      <td>${esc(r.name)}</td>
+      <td>${esc(r.purpose)}</td>
+      <td>${esc(r.start)}</td>
+      <td style="text-align:center;">${esc(r.inst)}</td>
+    </tr>
+  `).join('');
+
+  return `
+    <div class="page-a4">
+      <div style="font-size:11px; margin:0 0 6px 6px;">（別添様式２）</div>
+      <h1 style="text-align:center; font-size:19px; font-weight:700; margin:0 0 10px 0;">服用薬剤調整支援料２に係る情報提供書</h1>
+
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+        <div style="width:43%; font-size:11px; line-height:1.7;">
+          <div>情報提供先保険医療機関名：</div>
+          <div class="uline" style="width:100%; min-height:15px;">${esc(data.toHospital)}</div>
+          <div style="margin-top:6px;"><span class="uline" style="width:74px;">${esc(data.toDepartment)}</span> 科　殿</div>
+        </div>
+        <div style="width:43%; font-size:11px; line-height:1.5;">
+          <div style="text-align:right; margin-bottom:4px;">${esc(dateDisplay)}</div>
+          <div>情報提供元保険薬局の所在地及び名称</div>
+          <div class="uline" style="width:100%; min-height:15px;">${esc(data.fromAddress)}</div>
+          <div class="uline" style="width:100%; min-height:15px;">${esc(data.fromPharmacy)}</div>
+          <div>電　話 <span class="uline" style="width:110px; margin-left:6px;">${esc(data.fromPhone)}</span></div>
+          <div>（ＦＡＸ）<span class="uline" style="width:110px; margin-left:6px;">${esc(data.fromFax)}</span></div>
+          <div>保険薬剤師氏名 <span class="uline" style="width:110px; margin-left:6px;">${esc(data.pharmacistName)}</span><span style="float:right;">印</span></div>
+        </div>
+      </div>
+
+      <table class="doc-table" style="margin-bottom:8px;">
+        <tr>
+          <td class="label-cell" style="width:16%;">患者氏名</td>
+          <td colspan="3">${esc(data.patientName)}</td>
+        </tr>
+        <tr>
+          <td class="label-cell">性別（男・女）</td>
+          <td style="width:18%;">${esc(data.patientGender)}</td>
+          <td class="label-cell" style="width:22%;">生年月日</td>
+          <td>${esc(data.patientBirthday)} <span class="small">（${esc(data.patientAge)} 歳）</span></td>
+        </tr>
+        <tr>
+          <td class="label-cell">住所</td>
+          <td colspan="3">${esc(data.patientAddress)}</td>
+        </tr>
+        <tr>
+          <td class="label-cell">電話番号</td>
+          <td colspan="3">${esc(data.patientPhone)}</td>
+        </tr>
+      </table>
+
+      <div style="font-size:11px; margin:4px 0 8px 0;">以下の薬剤について、ご検討のほど宜しくお願い致します。</div>
+
+      <table class="doc-table" style="margin-bottom:8px;">
+        <tr><td class="label-cell" style="height:30px;">対象薬剤；</td><td>${esc(data.targetDrugs)}</td></tr>
+        <tr>
+          <td class="label-cell" style="height:64px;">ご相談内容；</td>
+          <td>
+            <div style="margin-bottom:4px;">${esc(data.consultation)}</div>
+            <div>（事前電話相談の有無； ${esc(data.phoneConsult)} ）</div>
+          </td>
+        </tr>
+      </table>
+
+      <table class="doc-table" style="margin-bottom:0;">
+        <tr><td colspan="4"><span style="font-weight:700;">１　受診中の他の保険医療機関、診療科等に関する情報</span></td></tr>
+        <tr>
+          <th style="width:10%;">番号</th>
+          <th style="width:38%;">保険医療機関名</th>
+          <th style="width:26%;">診療科</th>
+          <th style="width:26%;">疾患名　等</th>
+        </tr>
+        ${institutionRows}
+      </table>
+
+      <table class="doc-table" style="margin-top:0;">
+        <tr>
+          <td colspan="4">
+            <span style="font-weight:700;">２　現在服用中の薬剤の一覧</span>
+            <span class="tiny" style="float:right;">※必要に応じて手帳等の写しを添付</span>
+          </td>
+        </tr>
+        <tr>
+          <th style="width:30%;">医薬品名</th>
+          <th style="width:34%;">服用目的</th>
+          <th style="width:20%;">服用開始時期</th>
+          <th style="width:16%;">「1」の処方医療機関の番号</th>
+        </tr>
+        ${medRows}
+      </table>
+    </div>
+  `;
+}
+
+function syncUpdate(){
+  const data = getFormData();
+  const html = generateDocumentHTML(data);
+  document.getElementById('preview-sheet').innerHTML = html;
+  document.getElementById('print-sheet').innerHTML = html;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Enter'){
+    const el = document.activeElement;
+    if(!el) return;
+    if(el.tagName === 'TEXTAREA') return;
+    e.preventDefault();
+    const focusables = Array.from(document.querySelectorAll('input, select, textarea, button'))
+      .filter(el => !el.disabled && el.offsetParent !== null && el.type !== 'hidden');
+    const idx = focusables.indexOf(el);
+    if(idx > -1 && idx < focusables.length - 1) focusables[idx + 1].focus();
+  }
+});
+
+window.onload = () => {
+  createInstitutionInputs();
+  createMedicationInputs();
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(raw){
+    try{
+      applyFormData(JSON.parse(raw));
+      if(!document.getElementById('date').value) document.getElementById('date').value = new Date().toISOString().split('T')[0];
+      syncUpdate();
+      return;
+    }catch(e){}
+  }
+  document.getElementById('date').value = new Date().toISOString().split('T')[0];
+  syncUpdate();
+};
+</script>
+</body>
+</html>
