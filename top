@@ -25,6 +25,10 @@
         .border-warm {
             border-color: #f0ede4;
         }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(230, 126, 34, 0.1);
+        }
         /* ふんわりとした浮き上がりアニメーション */
         .fade-in {
             animation: fadeIn 0.8s ease-out forwards;
@@ -35,11 +39,11 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-column items-center justify-center">
+<body class="min-h-screen flex flex-col items-center">
 
-    <div class="w-full max-w-4xl mx-auto px-6 py-20 flex flex-col items-center">
+    <div class="w-full max-w-6xl mx-auto px-6 py-12 flex flex-col items-center">
         <!-- Main Logo / Title Section -->
-        <div class="fade-in text-center">
+        <div class="fade-in text-center mb-16">
             <div class="accent-bg w-16 h-16 rounded-2xl flex items-center justify-center text-white mx-auto mb-8 shadow-lg shadow-orange-200">
                 <i data-lucide="heart-handshake" class="w-8 h-8"></i>
             </div>
@@ -59,14 +63,63 @@
                 患者さんの<span class="font-bold accent-color">支援を支える</span>。
             </h2>
             
-            <p class="text-gray-500 max-w-2xl mx-auto text-base md:text-lg leading-relaxed mb-16 px-4">
+            <p class="text-gray-500 max-w-2xl mx-auto text-base md:text-lg leading-relaxed px-4">
                 日々の多忙な業務をシンプルに整理し、薬剤師がもっと「患者さんの声」に耳を傾けられる時間を創り出したい。<br class="hidden md:block">
                 SupportPhPortalは、あなたの専門性を最大限に引き出すためのパートナーです。
             </p>
         </div>
 
-        <!-- Tool Gateway Area (Future placeholders with context) -->
-        <div class="fade-in w-full grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl" style="animation-delay: 0.2s;">
+        <!-- App Grid Area -->
+        <div class="fade-in w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20" style="animation-delay: 0.2s;">
+            
+            <!-- App Card 1: 診療情報提供書 -->
+            <a href="Med_Annex11_2026.html" class="group block bg-white p-8 rounded-3xl border border-warm shadow-sm card-hover transition-all duration-300">
+                <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-orange-100 transition-colors">
+                    <i data-lucide="file-text" class="accent-color"></i>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-[10px] bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full font-bold">令和8年改定対応</span>
+                </div>
+                <h2 class="text-xl font-bold mb-3 accent-color">診療情報提供書 作成</h2>
+                <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                    別紙様式11に対応。複雑な和暦計算や年齢算出を自動化し、スムーズな情報提供をサポートします。
+                </p>
+                <div class="flex items-center text-xs font-bold text-gray-400 gap-1 uppercase tracking-wider">
+                    <span>ツールを開く</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </div>
+            </a>
+
+            <!-- App Card 2: 入院前の服薬状況等に係る情報提供書 -->
+            <a href="Ph_Annex1-2_2026.html" class="group block bg-white p-8 rounded-3xl border border-warm shadow-sm card-hover transition-all duration-300">
+                <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-orange-100 transition-colors">
+                    <i data-lucide="clipboard-list" class="accent-color"></i>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-[10px] bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full font-bold">令和8年改定対応</span>
+                </div>
+                <h2 class="text-xl font-bold mb-3 accent-color">入院前服薬状況等提供書</h2>
+                <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                    別紙様式1の2に対応。入院前の患者さんの多剤服用やコンプライアンス状況を整理し、施設間連携を円滑にします。
+                </p>
+                <div class="flex items-center text-xs font-bold text-gray-400 gap-1 uppercase tracking-wider">
+                    <span>ツールを開く</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </div>
+            </a>
+
+            <!-- Placeholder for future tools -->
+            <div class="bg-white/40 border border-warm border-dashed rounded-3xl p-8 flex flex-col items-center justify-center text-center opacity-60">
+                <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center mb-4 text-gray-300">
+                    <i data-lucide="plus" class="w-6 h-6"></i>
+                </div>
+                <p class="text-sm text-gray-400">新しいツールを準備中</p>
+            </div>
+
+        </div>
+
+        <!-- Concept Section -->
+        <div class="fade-in w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-6" style="animation-delay: 0.4s;">
             <div class="bg-white/60 border border-warm rounded-3xl p-8 flex items-start gap-5">
                 <div class="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center flex-shrink-0">
                     <i data-lucide="check-circle-2" class="accent-color w-6 h-6"></i>
@@ -88,7 +141,7 @@
         </div>
 
         <!-- GitHub Link Footer -->
-        <footer class="fade-in mt-24 text-center" style="animation-delay: 0.4s;">
+        <footer class="fade-in mt-24 pb-12 text-center" style="animation-delay: 0.6s;">
             <a href="https://github.com/589ph/SupportPhPortal" target="_blank" class="inline-flex items-center gap-2 text-gray-400 hover:text-orange-500 transition-colors text-sm">
                 <i data-lucide="github" class="w-4 h-4"></i>
                 <span>github.com/589ph/SupportPhPortal</span>
