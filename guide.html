@@ -16,6 +16,7 @@
             background-color: #f8f9fa;
             color: #1a1a1a;
             display: flex;
+            margin: 0;
         }
         .sidebar {
             width: 240px;
@@ -23,16 +24,17 @@
             border-right: 1px solid #e5e7eb;
             position: fixed;
             height: 100vh;
-            z-index: 50; /* サイドバーが常に最前面に来るように設定 */
+            z-index: 50;
+            overflow-y: auto;
         }
         .main-content {
-            margin-left: 240px; /* サイドバーの幅分を確保 */
+            margin-left: 240px;
             flex-grow: 1;
             padding: 40px;
-            min-width: 0; /* フレックスアイテムの縮小を許可し、はみ出しを防ぐ */
+            min-width: 0;
         }
         .content-container {
-            max-width: 800px; /* コンテンツの最大幅を制限して読みやすく */
+            max-width: 800px;
             margin: 0 auto;
         }
         .guide-card {
@@ -40,13 +42,24 @@
             border-radius: 16px;
             border: 1px solid #e5e7eb;
             margin-bottom: 32px;
-            scroll-margin-top: 40px;
+            scroll-margin-top: 100px;
+            overflow: hidden;
         }
         .point-box {
             background: #fdfcf8;
             border-left: 4px solid #8b3dff;
             padding: 16px;
             margin: 16px 0;
+        }
+        .toc-link.active {
+            color: #8b3dff;
+            font-weight: 700;
+            background-color: #f5f3ff;
+            border-radius: 8px;
+        }
+        /* スムーズスクロール */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
@@ -60,14 +73,16 @@
                 ダッシュボードへ戻る
             </a>
         </div>
-        <nav class="p-6 overflow-y-auto flex-grow">
+        <nav class="p-6 flex-grow">
             <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">目次</h3>
-            <ul class="space-y-4 text-sm font-medium">
-                <li><a href="#intro" class="toc-link text-gray-600 hover:text-purple-600 block transition-colors">はじめに</a></li>
-                <li><a href="#annex11" class="toc-link text-gray-600 hover:text-purple-600 block transition-colors">別紙様式 11</a></li>
-                <li><a href="#annex11-2" class="toc-link text-gray-600 hover:text-purple-600 block transition-colors">別紙様式 11の2</a></li>
-                <li><a href="#annex1-1" class="toc-link text-gray-600 hover:text-purple-600 block transition-colors">別紙様式 1-1</a></li>
-                <li><a href="#annex1-2" class="toc-link text-gray-600 hover:text-purple-600 block transition-colors">別紙様式 1-2</a></li>
+            <ul class="space-y-1 text-sm font-medium">
+                <li><a href="#intro" class="toc-link text-gray-600 hover:text-purple-600 block px-3 py-2 transition-all">はじめに</a></li>
+                <li><a href="#annex11" class="toc-link text-gray-600 hover:text-purple-600 block px-3 py-2 transition-all">別紙様式 11（診療情報提供）</a></li>
+                <li><a href="#annex11-2" class="toc-link text-gray-600 hover:text-purple-600 block px-3 py-2 transition-all">別紙様式 11の2（連携強化）</a></li>
+                <li><a href="#annex1-1" class="toc-link text-gray-600 hover:text-purple-600 block px-3 py-2 transition-all">別紙様式 1-1（服薬状況提供）</a></li>
+                <li><a href="#annex1-2" class="toc-link text-gray-600 hover:text-purple-600 block px-3 py-2 transition-all">別紙様式 1-2（入院前提供）</a></li>
+                <li><a href="#annex2" class="toc-link text-gray-600 hover:text-purple-600 block px-3 py-2 transition-all">別添様式 2（調整支援料2）</a></li>
+                <li><a href="#drugreport" class="toc-link text-gray-600 hover:text-purple-600 block px-3 py-2 transition-all">服用薬剤総合評価シート</a></li>
             </ul>
         </nav>
     </aside>
@@ -81,14 +96,14 @@
                     <span>Reference Guide</span>
                 </div>
                 <h1 class="text-4xl font-bold mb-4 leading-tight">令和8年度 診療報酬改定 様式解説</h1>
-                <p class="text-gray-500 leading-relaxed">
-                    本ガイドでは、保険薬局・医療機関において頻用される主要な情報提供書の目的、算定のポイント、および適切な記載方法について解説します。適切な情報連携は、対物業務から対人業務へのシフトを支える重要な基盤です。
+                <p class="text-gray-500 leading-relaxed text-lg">
+                    薬局・医療機関間の情報連携を円滑に行うための、主要様式の目的と記載のポイントをまとめています。
                 </p>
             </header>
 
             <!-- 別紙様式 11 -->
             <section id="annex11" class="guide-card shadow-sm">
-                <div class="p-8 border-b border-gray-100 bg-blue-50/30 rounded-t-16">
+                <div class="p-8 border-b border-gray-100 bg-blue-50/30">
                     <div class="flex justify-between items-start">
                         <div>
                             <span class="inline-block bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded mb-2">医科・歯科共通</span>
@@ -99,36 +114,18 @@
                         </a>
                     </div>
                 </div>
-                <div class="p-8 space-y-6">
-                    <div>
-                        <h3 class="font-bold flex items-center gap-2 mb-2 text-gray-700">
-                            <i data-lucide="target" class="w-4 h-4 text-purple-500"></i> 主な使用目的
-                        </h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            保険医療機関が、他の保険医療機関や保険薬局に対し、診療に必要な情報を提供する場合に使用します。患者の紹介や、検査結果の共有、継続的な治療の依頼など、最も標準的な連携様式です。
-                        </p>
-                    </div>
-                    <div>
-                        <h3 class="font-bold flex items-center gap-2 mb-2 text-gray-700">
-                            <i data-lucide="check-circle" class="w-4 h-4 text-purple-500"></i> 算定のポイント
-                        </h3>
-                        <ul class="text-sm text-gray-600 list-disc list-inside space-y-1">
-                            <li>診療情報提供料（Ⅰ）：250点（月1回に限り算定可能）</li>
-                            <li>薬局へ提供する場合は、当該患者の服薬状況、副作用の有無等の情報を含めることが望ましい。</li>
-                        </ul>
-                    </div>
+                <div class="p-8 space-y-4">
+                    <p class="text-sm text-gray-600">標準的な医療連携（紹介・逆紹介）に使用される最も一般的な様式です。診療情報提供料(Ⅰ)の算定に必須となります。</p>
                     <div class="point-box">
-                        <h4 class="text-sm font-bold mb-1 italic">記載のアドバイス</h4>
-                        <p class="text-xs leading-relaxed">
-                            「紹介目的」を明確に記載してください。「逆紹介（病院→薬局）」の場合は、退院時の方針や、特に継続して観察してほしい副作用（フラグ）を具体的に示すことで、薬局でのフォローアップの質が向上します。
-                        </p>
+                        <h4 class="text-sm font-bold mb-1">実務のポイント</h4>
+                        <p class="text-xs">紹介目的を明確にし、現在の処方内容や検査結果を網羅的に記載することで、受け入れ先の円滑な診療を支援します。</p>
                     </div>
                 </div>
             </section>
 
             <!-- 別紙様式 11の2 -->
             <section id="annex11-2" class="guide-card shadow-sm">
-                <div class="p-8 border-b border-gray-100 bg-purple-50/30 rounded-t-16">
+                <div class="p-8 border-b border-gray-100 bg-purple-50/30">
                     <div class="flex justify-between items-start">
                         <div>
                             <span class="inline-block bg-purple-100 text-purple-700 text-[10px] font-bold px-2 py-0.5 rounded mb-2">医科・歯科共通</span>
@@ -139,27 +136,18 @@
                         </a>
                     </div>
                 </div>
-                <div class="p-8 space-y-6">
-                    <div>
-                        <h3 class="font-bold flex items-center gap-2 mb-2 text-gray-700">
-                            <i data-lucide="target" class="w-4 h-4 text-purple-500"></i> 主な使用目的
-                        </h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            抗がん剤や免疫抑制剤など、高度な薬学的管理が必要な患者に対し、医療機関と薬局が緊密な連携を行うための様式です。特に「特定薬剤管理指導加算2」等の算定において、薬局からのフィードバックに対する回答や、詳細な処方意図の共有に用いられます。
-                        </p>
-                    </div>
+                <div class="p-8 space-y-4">
+                    <p class="text-sm text-gray-600">特定薬剤管理指導加算2や連携強化加算を算定する際など、薬局との高度な連携が必要な場合に使用します。</p>
                     <div class="point-box">
-                        <h4 class="text-sm font-bold mb-1 italic">記載のアドバイス</h4>
-                        <p class="text-xs leading-relaxed">
-                            レジメン内容や、次回の診察までに注意すべき検査値の閾値（例：白血球数が〇〇以下なら連絡など）を具体的に指示する際に有効です。
-                        </p>
+                        <h4 class="text-sm font-bold mb-1">実務のポイント</h4>
+                        <p class="text-xs">副作用のモニタリング指示や、休薬期間の遵守事項など、薬学的管理に直結する情報を重点的に記載します。</p>
                     </div>
                 </div>
             </section>
 
             <!-- 別紙様式 1-1 -->
             <section id="annex1-1" class="guide-card shadow-sm">
-                <div class="p-8 border-b border-gray-100 bg-green-50/30 rounded-t-16">
+                <div class="p-8 border-b border-gray-100 bg-green-50/30">
                     <div class="flex justify-between items-start">
                         <div>
                             <span class="inline-block bg-green-100 text-green-700 text-[10px] font-bold px-2 py-0.5 rounded mb-2">調剤</span>
@@ -170,36 +158,18 @@
                         </a>
                     </div>
                 </div>
-                <div class="p-8 space-y-6">
-                    <div>
-                        <h3 class="font-bold flex items-center gap-2 mb-2 text-gray-700">
-                            <i data-lucide="target" class="w-4 h-4 text-purple-500"></i> 主な使用目的
-                        </h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            保険薬局から処方医に対して、患者の服薬状況や残薬の有無、副作用の兆候などを報告するために使用します。トレーシングレポートとも呼ばれます。
-                        </p>
-                    </div>
-                    <div>
-                        <h3 class="font-bold flex items-center gap-2 mb-2 text-gray-700">
-                            <i data-lucide="check-circle" class="w-4 h-4 text-purple-500"></i> 算定のポイント
-                        </h3>
-                        <ul class="text-sm text-gray-600 list-disc list-inside space-y-1">
-                            <li>服薬情報等提供料1：30点（医療機関の求めに応じて提供した場合）</li>
-                            <li>服薬情報等提供料2：20点（薬剤師が必要性を認めて提供した場合）</li>
-                        </ul>
-                    </div>
+                <div class="p-8 space-y-4">
+                    <p class="text-sm text-gray-600">薬剤師が患者から聞き取った残薬状況や、副作用の疑い、服薬アドヒアランスの情報を医師にフィードバックする際に使用します。</p>
                     <div class="point-box">
-                        <h4 class="text-sm font-bold mb-1 italic">記載のアドバイス</h4>
-                        <p class="text-xs leading-relaxed">
-                            多忙な医師が短時間で把握できるよう、「結論（解決すべき課題）」→「理由（根拠データ）」の順で端的に記載しましょう。残薬調整の提案などは、具体的な数字を出すと効果的です。
-                        </p>
+                        <h4 class="text-sm font-bold mb-1">算定：服薬情報提供料</h4>
+                        <p class="text-xs">患者またはその家族等の求め、または医師の求め、あるいは薬剤師が必要と認めた場合に情報を文書で提供することで算定可能です。</p>
                     </div>
                 </div>
             </section>
 
             <!-- 別紙様式 1-2 -->
             <section id="annex1-2" class="guide-card shadow-sm">
-                <div class="p-8 border-b border-gray-100 bg-orange-50/30 rounded-t-16">
+                <div class="p-8 border-b border-gray-100 bg-orange-50/30">
                     <div class="flex justify-between items-start">
                         <div>
                             <span class="inline-block bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded mb-2">調剤</span>
@@ -210,20 +180,66 @@
                         </a>
                     </div>
                 </div>
-                <div class="p-8 space-y-6">
-                    <div>
-                        <h3 class="font-bold flex items-center gap-2 mb-2 text-gray-700">
-                            <i data-lucide="target" class="w-4 h-4 text-purple-500"></i> 主な使用目的
-                        </h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            患者が入院する際、入院先の医療機関に対して、服用中の薬剤名だけでなく「実際の服用状況」や「アドヒアランスの課題」を伝えるための様式です。
-                        </p>
-                    </div>
+                <div class="p-8 space-y-4">
+                    <p class="text-sm text-gray-600">予定入院を控えた患者の持参薬整理や、OTC医薬品・サプリメントを含む服薬実態を病院へ事前共有するための様式です。</p>
                     <div class="point-box">
-                        <h4 class="text-sm font-bold mb-1 italic">記載のアドバイス</h4>
-                        <p class="text-xs leading-relaxed">
-                            お薬手帳だけでは見えない「実は飲めていない薬」や「自己判断で中止している薬」、「市販薬やサプリメントの常用」についての情報を付加することが病院薬剤師の大きな助けになります。
-                        </p>
+                        <h4 class="text-sm font-bold mb-1">実務のポイント</h4>
+                        <p class="text-xs">入院時の持参薬鑑別時間を大幅に短縮し、手術前の休薬指示の漏れを防ぐなど、安全な入院医療の提供に寄与します。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 別添様式 2 -->
+            <section id="annex2" class="guide-card shadow-sm">
+                <div class="p-8 border-b border-gray-100 bg-indigo-50/30">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="inline-block bg-indigo-100 text-indigo-700 text-[10px] font-bold px-2 py-0.5 rounded mb-2">調剤</span>
+                            <h2 class="text-2xl font-bold text-gray-800">別添様式 2：服用薬剤調整支援料2に係る情報提供書</h2>
+                        </div>
+                        <a href="Ph_Annex2_2026.html" class="p-2 bg-white rounded-full shadow-sm hover:shadow-md transition-all border border-gray-100">
+                            <i data-lucide="external-link" class="w-5 h-5 text-gray-400"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="p-8 space-y-4">
+                    <p class="text-sm text-gray-600">複数の医療機関から多剤処方されている患者に対し、処方の集約や整理を提案するための書類です。</p>
+                    <div class="point-box">
+                        <h4 class="text-sm font-bold mb-1">算定：服用薬剤調整支援料2（110点）</h4>
+                        <p class="text-xs">6種類以上の内服薬が処方されている患者に対し、重複投薬等の解消に係る提案を「文書」で行った場合に月1回算定可能です。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 服用薬剤総合評価シート -->
+            <section id="drugreport" class="guide-card shadow-sm border-blue-200">
+                <div class="p-8 border-b border-gray-100 bg-blue-50/50">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="inline-block bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded mb-2">調剤 / 連携</span>
+                            <h2 class="text-2xl font-bold text-gray-800">服用薬剤総合評価シート</h2>
+                        </div>
+                        <a href="Ph_AnnexDrugReport_2026.html" class="p-2 bg-white rounded-full shadow-sm hover:shadow-md transition-all border border-gray-100">
+                            <i data-lucide="external-link" class="w-5 h-5 text-gray-400"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="p-8 space-y-4">
+                    <p class="text-sm text-gray-600">
+                        ポリファーマシー解消に向けた「服用薬剤調整支援料1」の算定に際し、薬剤師が行った総合的な薬学的評価を記録・報告するための重要書類です。
+                    </p>
+                    <div class="point-box">
+                        <h4 class="text-sm font-bold mb-1">算定：服用薬剤調整支援料1（480点）</h4>
+                        <p class="text-xs">入院中の患者に対し、6種類以上の内服薬を調整し、2種類以上減少させた場合に算定されます。本シートはその合意形成と結果報告の根拠となります。</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="text-xs font-bold text-gray-500 mb-2 uppercase">主な評価項目</h4>
+                        <ul class="text-xs text-gray-600 grid grid-cols-2 gap-2">
+                            <li class="flex items-center gap-1"><i data-lucide="check" class="w-3 h-3 text-green-500"></i> 副作用の有無</li>
+                            <li class="flex items-center gap-1"><i data-lucide="check" class="w-3 h-3 text-green-500"></i> 重複投薬の確認</li>
+                            <li class="flex items-center gap-1"><i data-lucide="check" class="w-3 h-3 text-green-500"></i> アドヒアランス評価</li>
+                            <li class="flex items-center gap-1"><i data-lucide="check" class="w-3 h-3 text-green-500"></i> 処方整理の提案</li>
+                        </ul>
                     </div>
                 </div>
             </section>
@@ -235,25 +251,27 @@
     </main>
 
     <script>
+        // Lucideアイコンの初期化
         lucide.createIcons();
         
-        // サイドバーの目次のアクティブ化（簡易版）
+        // スクロールに応じたアクティブリンクの更新
         window.addEventListener('scroll', () => {
             const sections = document.querySelectorAll('section, header');
             const navLinks = document.querySelectorAll('.toc-link');
-            
             let current = "";
+            
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
-                if (window.pageYOffset >= sectionTop - 100) {
+                // ヘッダーの高さを考慮した判定
+                if (window.pageYOffset >= sectionTop - 150) {
                     current = section.getAttribute('id');
                 }
             });
 
             navLinks.forEach(link => {
-                link.classList.remove('text-purple-600');
-                if (link.getAttribute('href').includes(current)) {
-                    link.classList.add('text-purple-600');
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
                 }
             });
         });
