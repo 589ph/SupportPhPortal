@@ -14,6 +14,7 @@
         :root {
             --canvas-bg: #f8f9fa;
             --sidebar-width: 240px;
+            --accent-color: #8b3dff;
         }
         body {
             font-family: 'Noto Sans JP', sans-serif;
@@ -53,9 +54,9 @@
         .tag-pharmacy { background: #f0fdf4; color: #166534; } /* 調剤 */
 
         .filter-btn.active {
-            background-color: #8b3dff;
+            background-color: var(--accent-color);
             color: white;
-            border-color: #8b3dff;
+            border-color: var(--accent-color);
         }
         
         .fade-in {
@@ -64,6 +65,20 @@
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
+        }
+
+        /* カスタムスクロールバー */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+
+        .stat-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -83,13 +98,22 @@
                 <a href="#" class="flex items-center gap-3 px-3 py-2 bg-purple-50 text-purple-700 rounded-lg font-medium">
                     <i data-lucide="home" class="w-4 h-4"></i> ホーム
                 </a>
-                <a href="guide.html" class="flex items-center gap-3 px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg transition-colors">
+                <a href="#" class="flex items-center gap-3 px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg transition-colors">
                     <i data-lucide="book-open" class="w-4 h-4"></i> 様式解説ガイド
                 </a>
                 <a href="#" class="flex items-center gap-3 px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg transition-colors">
                     <i data-lucide="history" class="w-4 h-4"></i> 最近使った項目
                 </a>
             </nav>
+        </div>
+        <div class="mt-auto p-6 border-t border-gray-100">
+            <div class="bg-gray-50 rounded-xl p-4">
+                <p class="text-[10px] text-gray-400 font-bold uppercase mb-2">System Status</p>
+                <div class="flex items-center gap-2 text-xs text-green-600 font-medium">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    2026 改定対応済
+                </div>
+            </div>
         </div>
     </aside>
 
@@ -117,6 +141,31 @@
             </div>
         </header>
 
+        <!-- Stats Section -->
+        <div class="px-8 pt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="stat-card bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+                <div class="bg-blue-50 text-blue-600 p-3 rounded-xl"><i data-lucide="file-text" class="w-6 h-6"></i></div>
+                <div>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">作成可能様式</p>
+                    <p class="text-2xl font-bold text-gray-800">6 <span class="text-sm font-normal text-gray-400">種類</span></p>
+                </div>
+            </div>
+            <div class="stat-card bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+                <div class="bg-purple-50 text-purple-600 p-3 rounded-xl"><i data-lucide="zap" class="w-6 h-6"></i></div>
+                <div>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">最終更新日</p>
+                    <p class="text-2xl font-bold text-gray-800">04/17</p>
+                </div>
+            </div>
+            <div class="stat-card bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+                <div class="bg-orange-50 text-orange-600 p-3 rounded-xl"><i data-lucide="award" class="w-6 h-6"></i></div>
+                <div>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">診療報酬改定</p>
+                    <p class="text-2xl font-bold text-gray-800">2026 <span class="text-sm font-normal text-gray-400">対応済</span></p>
+                </div>
+            </div>
+        </div>
+
         <!-- Index Table -->
         <div class="p-8">
             <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden fade-in">
@@ -132,25 +181,27 @@
                 <!-- Tool List Container -->
                 <div id="toolList">
                     
-                    <!-- Item 1: Med_Annex11 (Medical & Dental) -->
-                    <div class="tool-item list-row grid grid-cols-12 px-6 py-5 items-center cursor-pointer group" data-category="medical dental" onclick="location.href='Med_Annex11_2026.html'">
+                    <!-- Item 1: Med_Annex11 -->
+                    <div class="tool-item list-row grid grid-cols-12 px-6 py-5 items-center cursor-pointer group" data-category="medical dental" onclick="handleNavigation('Med_Annex11_2026.html')">
                         <div class="col-span-2 flex gap-1">
                             <span class="tag tag-medical">医科</span>
                             <span class="tag tag-dental">歯科</span>
                         </div>
                         <div class="col-span-5">
                             <div class="font-bold text-gray-800 group-hover:text-purple-600 transition-colors">診療情報提供書</div>
-                            <div class="text-xs text-gray-400 mt-0.5">B009 診療情報提供料（Ⅰ）/ 歯科B009</div>
+                            <div class="text-xs text-gray-400 mt-0.5">B009 診療情報提供料（Ⅰ）</div>
                         </div>
                         <div class="col-span-2 text-sm text-gray-500 font-medium">別紙様式 11</div>
                         <div class="col-span-2 text-xs text-gray-400">2026年6月改定</div>
                         <div class="col-span-1 text-right">
-                            <i data-lucide="external-link" class="w-4 h-4 text-gray-300 group-hover:text-purple-500 ml-auto"></i>
+                            <button class="bg-gray-100 text-gray-400 group-hover:bg-purple-600 group-hover:text-white p-2 rounded-lg transition-all">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Item 2: Med_Annex11-2 (Medical & Dental) -->
-                    <div class="tool-item list-row grid grid-cols-12 px-6 py-5 items-center cursor-pointer group" data-category="medical dental" onclick="location.href='Med_Annex11-2_2026.html'">
+                    <!-- Item 2: Med_Annex11-2 -->
+                    <div class="tool-item list-row grid grid-cols-12 px-6 py-5 items-center cursor-pointer group" data-category="medical dental" onclick="handleNavigation('Med_Annex11-2_2026.html')">
                         <div class="col-span-2 flex gap-1">
                             <span class="tag tag-medical">医科</span>
                             <span class="tag tag-dental">歯科</span>
@@ -162,12 +213,14 @@
                         <div class="col-span-2 text-sm text-gray-500 font-medium">別紙様式 11の2</div>
                         <div class="col-span-2 text-xs text-gray-400">2026年6月改定</div>
                         <div class="col-span-1 text-right">
-                            <i data-lucide="external-link" class="w-4 h-4 text-gray-300 group-hover:text-purple-500 ml-auto"></i>
+                            <button class="bg-gray-100 text-gray-400 group-hover:bg-purple-600 group-hover:text-white p-2 rounded-lg transition-all">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Item 3: Ph_Annex1-1 (Pharmacy) -->
-                    <div class="tool-item list-row grid grid-cols-12 px-6 py-5 items-center cursor-pointer group" data-category="pharmacy" onclick="location.href='Ph_Annex1-1_2026.html'">
+                    <!-- Item 3: Ph_Annex1-1 -->
+                    <div class="tool-item list-row grid grid-cols-12 px-6 py-5 items-center cursor-pointer group" data-category="pharmacy" onclick="handleNavigation('Ph_Annex1-1_2026.html')">
                         <div class="col-span-2">
                             <span class="tag tag-pharmacy">調剤</span>
                         </div>
@@ -178,12 +231,14 @@
                         <div class="col-span-2 text-sm text-gray-500 font-medium">別紙様式 1-1</div>
                         <div class="col-span-2 text-xs text-gray-400">2026年6月改定</div>
                         <div class="col-span-1 text-right">
-                            <i data-lucide="external-link" class="w-4 h-4 text-gray-300 group-hover:text-purple-500 ml-auto"></i>
+                            <button class="bg-gray-100 text-gray-400 group-hover:bg-purple-600 group-hover:text-white p-2 rounded-lg transition-all">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Item 4: Ph_Annex1-2 (Pharmacy) -->
-                    <div class="tool-item list-row grid grid-cols-12 px-6 py-5 items-center cursor-pointer group" data-category="pharmacy" onclick="location.href='Ph_Annex1-2_2026.html'">
+                    <!-- Item 4: Ph_Annex1-2 (UPLOADED FILE) -->
+                    <div class="tool-item list-row grid grid-cols-12 px-6 py-5 items-center cursor-pointer group" data-category="pharmacy" onclick="handleNavigation('Ph_Annex1-2_2026.html')">
                         <div class="col-span-2">
                             <span class="tag tag-pharmacy">調剤</span>
                         </div>
@@ -194,12 +249,14 @@
                         <div class="col-span-2 text-sm text-gray-500 font-medium">別紙様式 1-2</div>
                         <div class="col-span-2 text-xs text-gray-400">2026年6月改定</div>
                         <div class="col-span-1 text-right">
-                            <i data-lucide="external-link" class="w-4 h-4 text-gray-300 group-hover:text-purple-500 ml-auto"></i>
+                            <button class="bg-gray-100 text-gray-400 group-hover:bg-purple-600 group-hover:text-white p-2 rounded-lg transition-all">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Item 5: Ph_Annex2 (Pharmacy) -->
-                    <div class="tool-item list-row grid grid-cols-12 px-6 py-5 items-center cursor-pointer group" data-category="pharmacy" onclick="location.href='Ph_Annex2_2026.html'">
+                    <!-- Item 5: Ph_Annex2 (UPLOADED FILE) -->
+                    <div class="tool-item list-row grid grid-cols-12 px-6 py-5 items-center cursor-pointer group" data-category="pharmacy" onclick="handleNavigation('Ph_Annex2_2026.html')">
                         <div class="col-span-2">
                             <span class="tag tag-pharmacy">調剤</span>
                         </div>
@@ -210,12 +267,14 @@
                         <div class="col-span-2 text-sm text-gray-500 font-medium">別添様式 2</div>
                         <div class="col-span-2 text-xs text-gray-400">2026年6月改定</div>
                         <div class="col-span-1 text-right">
-                            <i data-lucide="external-link" class="w-4 h-4 text-gray-300 group-hover:text-purple-500 ml-auto"></i>
+                            <button class="bg-gray-100 text-gray-400 group-hover:bg-purple-600 group-hover:text-white p-2 rounded-lg transition-all">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- NEW Item 6: Ph_AnnexDrugReport (Pharmacy) -->
-                    <div class="tool-item list-row grid grid-cols-12 px-6 py-5 items-center cursor-pointer group" data-category="pharmacy" onclick="location.href='Ph_AnnexDrugReport_2026.html'">
+                    <!-- Item 6: Ph_AnnexDrugReport (UPLOADED FILE) -->
+                    <div class="tool-item list-row grid grid-cols-12 px-6 py-5 items-center cursor-pointer group" data-category="pharmacy" onclick="handleNavigation('Ph_AnnexDrugReport_2026.html')">
                         <div class="col-span-2">
                             <span class="tag tag-pharmacy">調剤</span>
                         </div>
@@ -223,10 +282,12 @@
                             <div class="font-bold text-gray-800 group-hover:text-purple-600 transition-colors">服用薬剤総合評価シート</div>
                             <div class="text-xs text-gray-400 mt-0.5">服用薬剤調整支援料1、多剤服用患者の薬学的総合評価用。</div>
                         </div>
-                        <div class="col-span-2 text-sm text-gray-500 font-medium">-</div>
+                        <div class="col-span-2 text-sm text-gray-500 font-medium">独自様式</div>
                         <div class="col-span-2 text-xs text-gray-400">2026年6月改定</div>
                         <div class="col-span-1 text-right">
-                            <i data-lucide="external-link" class="w-4 h-4 text-gray-300 group-hover:text-purple-500 ml-auto"></i>
+                            <button class="bg-gray-100 text-gray-400 group-hover:bg-purple-600 group-hover:text-white p-2 rounded-lg transition-all">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            </button>
                         </div>
                     </div>
 
@@ -237,30 +298,52 @@
             <div class="mt-8 flex justify-between items-center text-xs text-gray-400 font-medium">
                 <div class="flex gap-4">
                     <span class="flex items-center gap-1"><i data-lucide="info" class="w-3 h-3"></i> 6つのツールが利用可能です</span>
-                    <a href="guide.html" class="flex items-center gap-1 text-purple-500 hover:underline"><i data-lucide="book-open" class="w-3 h-3"></i> 様式の書き方ガイドを見る</a>
+                    <a href="#" class="flex items-center gap-1 text-purple-500 hover:underline"><i data-lucide="book-open" class="w-3 h-3"></i> 様式の書き方ガイドを見る</a>
                 </div>
                 <div>Last Sync: 2026.04.17</div>
             </div>
         </div>
     </main>
 
+    <!-- Navigation Toast (Mock) -->
+    <div id="navToast" class="fixed bottom-8 right-8 bg-gray-900 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-24 transition-transform duration-300 z-50">
+        <div class="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+        <span class="text-sm font-medium" id="navMsg">読み込み中...</span>
+    </div>
+
     <script>
         lucide.createIcons();
+
+        function handleNavigation(url) {
+            const toast = document.getElementById('navToast');
+            const msg = document.getElementById('navMsg');
+            msg.innerText = `${url} を開いています...`;
+            toast.classList.remove('translate-y-24');
+            
+            setTimeout(() => {
+                // 実際にはリンク遷移だが、ここではシミュレーションとしてトーストを隠す
+                // location.href = url;
+                toast.classList.add('translate-y-24');
+            }, 1200);
+        }
 
         function filterTools(category) {
             const items = document.querySelectorAll('.tool-item');
             const buttons = document.querySelectorAll('.filter-btn');
             
-            // ボタンの活性状態切り替え
             buttons.forEach(btn => btn.classList.remove('active'));
-            document.getElementById('btn-' + category).classList.add('active');
+            const targetBtn = document.getElementById('btn-' + category);
+            if (targetBtn) targetBtn.classList.add('active');
 
             items.forEach(item => {
                 const itemCategories = item.getAttribute('data-category').split(' ');
                 if (category === 'all' || itemCategories.includes(category)) {
                     item.style.display = 'grid';
+                    item.style.opacity = '0';
+                    setTimeout(() => { item.style.opacity = '1'; item.classList.add('fade-in'); }, 10);
                 } else {
                     item.style.display = 'none';
+                    item.classList.remove('fade-in');
                 }
             });
         }
@@ -269,7 +352,8 @@
             const input = document.getElementById('toolSearch');
             const filter = input.value.toLowerCase();
             const items = document.querySelectorAll('.tool-item');
-            const activeFilter = document.querySelector('.filter-btn.active').id.replace('btn-', '');
+            const activeButton = document.querySelector('.filter-btn.active');
+            const activeFilter = activeButton ? activeButton.id.replace('btn-', '') : 'all';
 
             items.forEach(item => {
                 const text = item.innerText.toLowerCase();
