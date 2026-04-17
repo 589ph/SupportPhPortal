@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SupportPhPortal | 薬剤師と患者さんをつなぐ支援の入り口</title>
+    <!-- Tailwind CSS for utility-first styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Noto Sans JP for a clean, friendly look -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons for consistent iconography -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #fdfcf8; /* 温かみのあるオフホワイト */
+            color: #4a4a4a; /* 柔らかなダークグレー */
+        }
+        .accent-color {
+            color: #e67e22; /* テラコッタ・オレンジ */
+        }
+        .accent-bg {
+            background-color: #e67e22;
+        }
+        .border-warm {
+            border-color: #f0ede4;
+        }
+        /* ふんわりとした浮き上がりアニメーション */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-column items-center justify-center">
+
+    <div class="w-full max-w-4xl mx-auto px-6 py-20 flex flex-col items-center">
+        <!-- Main Logo / Title Section -->
+        <div class="fade-in text-center">
+            <div class="accent-bg w-16 h-16 rounded-2xl flex items-center justify-center text-white mx-auto mb-8 shadow-lg shadow-orange-200">
+                <i data-lucide="heart-handshake" class="w-8 h-8"></i>
+            </div>
+            
+            <h1 class="text-4xl font-bold tracking-tight accent-color mb-2">
+                SupportPhPortal
+            </h1>
+            
+            <p class="text-gray-400 font-light text-sm tracking-widest uppercase mb-12">
+                Empowering Pharmacists, Supporting Patients
+            </p>
+
+            <div class="h-px w-12 bg-orange-200 mx-auto mb-12"></div>
+
+            <h2 class="text-2xl md:text-4xl font-light mb-8 leading-tight">
+                保険薬局薬剤師の<span class="font-bold accent-color">業務を助け</span>、<br>
+                患者さんの<span class="font-bold accent-color">支援を支える</span>。
+            </h2>
+            
+            <p class="text-gray-500 max-w-2xl mx-auto text-base md:text-lg leading-relaxed mb-16 px-4">
+                日々の多忙な業務をシンプルに整理し、薬剤師がもっと「患者さんの声」に耳を傾けられる時間を創り出したい。<br class="hidden md:block">
+                SupportPhPortalは、あなたの専門性を最大限に引き出すためのパートナーです。
+            </p>
+        </div>
+
+        <!-- Tool Gateway Area (Future placeholders with context) -->
+        <div class="fade-in w-full grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl" style="animation-delay: 0.2s;">
+            <div class="bg-white/60 border border-warm rounded-3xl p-8 flex items-start gap-5">
+                <div class="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="check-circle-2" class="accent-color w-6 h-6"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-700 mb-1 text-lg">業務の効率化</h3>
+                    <p class="text-sm text-gray-500">計算や判定などのルーチンを自動化し、ミスを防ぎます。</p>
+                </div>
+            </div>
+            <div class="bg-white/60 border border-warm rounded-3xl p-8 flex items-start gap-5">
+                <div class="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="users" class="accent-color w-6 h-6"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-700 mb-1 text-lg">患者支援の質を向上</h3>
+                    <p class="text-sm text-gray-500">根拠に基づいた指導を支援し、対人業務をアップデートします。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- GitHub Link Footer -->
+        <footer class="fade-in mt-24 text-center" style="animation-delay: 0.4s;">
+            <a href="https://github.com/589ph/SupportPhPortal" target="_blank" class="inline-flex items-center gap-2 text-gray-400 hover:text-orange-500 transition-colors text-sm">
+                <i data-lucide="github" class="w-4 h-4"></i>
+                <span>github.com/589ph/SupportPhPortal</span>
+            </a>
+            <p class="mt-8 text-[10px] text-gray-300 uppercase tracking-widest font-bold">
+                &copy; 2026 SupportPhPortal
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Lucideアイコンの初期化
+        lucide.createIcons();
+    </script>
+</body>
+</html>
