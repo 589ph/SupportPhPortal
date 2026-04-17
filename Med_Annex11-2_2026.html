@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>別紙様式１１の２　診療情報提供書（2026年）</title>
+  <title>（別紙様式11の2）診療情報提供書 2026年</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
@@ -13,7 +13,7 @@
       .side-form { width:500px; background:#fff; padding:24px; overflow-y:auto; box-shadow:4px 0 15px rgba(0,0,0,.08); z-index:10; }
       .main-preview { flex-grow:1; padding:20px; background:#e2e8f0; display:flex; justify-content:center; overflow:auto; }
       .page-a4 {
-        width:210mm; min-height:297mm; background:#fff; padding:12mm 16mm;
+        width:210mm; min-height:297mm; background:#fff; padding:24mm 22mm 14mm 22mm;
         box-shadow:0 10px 30px rgba(0,0,0,.12); box-sizing:border-box; transform-origin: top center;
       }
       @media (max-width:1450px){ .page-a4 { transform:scale(.82); } }
@@ -26,7 +26,7 @@
       .app-container, .no-print { display:none !important; }
       #print-only-container { display:block !important; width:210mm !important; background:#fff !important; }
       .print-page {
-        width:210mm !important; height:297mm !important; padding:12mm 16mm !important;
+        width:210mm !important; height:297mm !important; padding:24mm 22mm 14mm 22mm !important;
         box-sizing:border-box !important; background:#fff !important; overflow:hidden !important;
       }
       table, td, th { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -36,9 +36,9 @@
     }
     .doc-table { width:100%; border-collapse:collapse; border:1.2px solid #222; table-layout:fixed; }
     .doc-table td, .doc-table th {
-      border:1px solid #222; padding:5px 7px; vertical-align:top; font-size:.82rem; color:#111; word-wrap:break-word; line-height:1.3;
+      border:1px solid #222; padding:4px 6px; vertical-align:top; font-size:.76rem; color:#111; word-wrap:break-word; line-height:1.25;
     }
-    .label-cell { background:#fafafa; font-weight:700; width:120px; }
+    .label-cell { background:#fff; font-weight:700; width:88px; }
     .small { font-size:.72rem !important; }
     .uline {
       display:inline-block; border-bottom:1px solid #111; min-height:1.1em; vertical-align:bottom; padding:0 2px 1px 2px;
@@ -239,76 +239,80 @@ function mark(b){ return b ? '☑' : '□'; }
 function generateDocumentHTML(data){
   const dateDisplay = data.date ? getWareki(data.date) : '年　月　日';
   return `
-    <div style="font-size:12px; margin:0 0 6px 6px;">（別紙様式１１の２）</div>
-    <h1 style="text-align:center; font-size:22px; font-weight:700; margin:0 0 10px 0;">診療情報提供書</h1>
+    <div style="font-size:11px; text-align:left; margin:0 0 10px 8px;">（別紙様式１１の２）</div>
+    <h1 style="text-align:center; font-size:15px; font-weight:700; margin:0 0 16px 0; letter-spacing:.04em;">診療情報提供書</h1>
 
     <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
-      <div style="width:45%; font-size:13px; line-height:1.9;">
-        <div>紹介先医療機関等名</div>
-        <div class="uline" style="width:100%; min-height:18px;">${esc(data.toHospital)}</div>
-        <div style="margin-top:4px;">
+      <div style="width:46%; font-size:11px; line-height:1.8;">
+        <div style="margin-bottom:2px;">紹介先医療機関等名</div>
+        <div class="uline" style="width:100%; min-height:15px;">${esc(data.toHospital)}</div>
+        <div style="margin-top:6px;">
           <span>担当医</span>
-          <span style="display:inline-block; width:28px;"></span>
-          <span class="uline" style="width:90px; margin:0 6px;">${esc(data.toDepartment)}</span>
-          <span style="display:inline-block; width:10px;"></span>
-          <span class="uline" style="width:110px; margin:0 6px;">${esc(data.toDoctorName || '')}</span>
-          <span style="margin-left:8px;">殿</span>
+          <span style="margin-left:12px;">診療科</span>
+          <span class="uline" style="width:85px; margin:0 6px;">${esc(data.toDepartment)}</span>
+          <span>氏名</span>
+          <span class="uline" style="width:95px; margin:0 6px;">${esc(data.toDoctorName || '')}</span>
+          <span>殿</span>
         </div>
       </div>
 
-      <div style="width:46%; font-size:12px; line-height:1.55;">
-        <div style="text-align:right; margin-bottom:3px;">${esc(dateDisplay)}</div>
-        <div>紹介元医療機関の所在地及び名称</div>
-        <div class="uline" style="width:100%; min-height:16px;">${esc(data.fromAddress)}</div>
-        <div class="uline" style="width:100%; min-height:16px;">${esc(data.fromHospital)}</div>
-        <div>電話番号 <span class="uline" style="width:130px; margin-left:6px;">${esc(data.fromPhone)}</span></div>
-        <div style="margin-top:8px;">医師署名（又は記名押印）</div>
-        <div class="uline" style="width:100%; min-height:16px;">${esc(data.doctorSignature)}</div>
+      <div style="width:41%; font-size:11px; line-height:1.55;">
+        <div style="text-align:right; margin-bottom:6px;">${esc(dateDisplay)}</div>
+        <div style="margin-bottom:2px;">紹介元医療機関の所在地及び名称</div>
+        <div class="uline" style="width:100%; min-height:15px;">${esc(data.fromAddress)}</div>
+        <div class="uline" style="width:100%; min-height:15px;">${esc(data.fromHospital)}</div>
+        <div style="margin-top:4px;">電話番号 <span class="uline" style="width:115px; margin-left:6px;">${esc(data.fromPhone)}</span></div>
+        <div style="margin-top:6px;">医師署名（又は記名押印）</div>
+        <div class="uline" style="width:100%; min-height:15px;">${esc(data.doctorSignature)}</div>
       </div>
     </div>
 
-    <div style="font-size:11px; margin-bottom:8px; line-height:1.6;">
-      <div style="font-weight:700; margin-bottom:2px;">以下の診療報酬項目の届出状況</div>
-      <div>${mark(data.fee1)} 地域包括診療加算　${mark(data.fee2)} 地域包括診療料　${mark(data.fee3)} 小児かかりつけ診療料</div>
+    <div style="font-size:10px; margin:0 0 8px 0; line-height:1.55;">
+      <div style="font-weight:700;">以下の診療報酬項目の届出状況</div>
+      <div style="margin-top:2px;">${mark(data.fee1)} 地域包括診療加算　${mark(data.fee2)} 地域包括診療料　${mark(data.fee3)} 小児かかりつけ診療料</div>
       <div>${mark(data.fee4)} 在宅時医学総合管理料　（${mark(data.fee4sub)} 在宅療養支援診療所又は在宅療養支援病院）</div>
-      <div>${mark(data.fee5)} 施設入居時等医学総合管理料　（${mark(data.fee5sub)} 在宅療養支援診療所又は在宅療養支援病院）</div>
+      <div>${mark(data.fee5)} 施設入居時等時医学総合管理料　（${mark(data.fee5sub)} 在宅療養支援診療所又は在宅療養支援病院）</div>
     </div>
 
     <table class="doc-table" style="margin-bottom:8px;">
       <tr>
-        <td class="label-cell">患者氏名</td>
-        <td>${esc(data.patientName)}</td>
-        <td class="label-cell" style="width:72px;">性別</td>
-        <td style="width:72px;">${esc(data.patientGender)}</td>
+        <td class="label-cell" style="width:16%;">患者氏名</td>
+        <td style="width:38%;">${esc(data.patientName)}</td>
+        <td class="label-cell" style="width:12%;">性別</td>
+        <td style="width:10%; text-align:center;">${esc(data.patientGender)}</td>
+        <td class="label-cell" style="width:10%;">男・女</td>
+        <td style="width:14%;"></td>
       </tr>
       <tr>
         <td class="label-cell">患者住所</td>
-        <td colspan="3">${esc(data.patientAddress)}</td>
+        <td colspan="5">${esc(data.patientAddress)}</td>
       </tr>
       <tr>
         <td class="label-cell">電話番号</td>
-        <td>${esc(data.patientPhone)}</td>
+        <td colspan="3">${esc(data.patientPhone)}</td>
         <td class="label-cell">職業</td>
         <td>${esc(data.patientJob)}</td>
       </tr>
       <tr>
         <td class="label-cell">生年月日</td>
-        <td>${esc(data.patientBirthday)}（${esc(data.patientAge)} 歳）</td>
+        <td colspan="5">${esc(data.patientBirthday)}（${esc(data.patientAge)} 歳）</td>
+      </tr>
+      <tr>
         <td class="label-cell">傷病名</td>
-        <td>${esc(data.diseaseName)}</td>
+        <td colspan="5" style="height:26px; font-weight:700;">${esc(data.diseaseName)}</td>
       </tr>
     </table>
 
     <table class="doc-table">
-      <tr><td class="label-cell" style="height:46px;">紹介目的</td><td>${esc(data.purpose)}</td></tr>
-      <tr><td class="label-cell" style="height:78px;">既往歴及び家族歴</td><td>${esc(data.history)}</td></tr>
-      <tr><td class="label-cell" style="height:130px;">症状経過及び検査結果</td><td>${esc(data.progress)}</td></tr>
-      <tr><td class="label-cell" style="height:78px;">治療経過</td><td>${esc(data.treatment)}</td></tr>
-      <tr><td class="label-cell" style="height:78px;">現在の処方</td><td>${esc(data.prescription)}</td></tr>
-      <tr><td class="label-cell" style="height:66px;">備考</td><td>${esc(data.remarks)}</td></tr>
+      <tr><td class="label-cell" style="height:36px;">紹介目的</td><td>${esc(data.purpose)}</td></tr>
+      <tr><td class="label-cell" style="height:58px;">既往歴及び家族歴</td><td>${esc(data.history)}</td></tr>
+      <tr><td class="label-cell" style="height:108px;">症状経過及び検査結果</td><td>${esc(data.progress)}</td></tr>
+      <tr><td class="label-cell" style="height:58px;">治療経過</td><td>${esc(data.treatment)}</td></tr>
+      <tr><td class="label-cell" style="height:52px;">現在の処方</td><td>${esc(data.prescription)}</td></tr>
+      <tr><td class="label-cell" style="height:42px;">備考</td><td>${esc(data.remarks)}</td></tr>
     </table>
 
-    <div style="font-size:9px; line-height:1.55; margin-top:10px;">
+    <div style="font-size:8.6px; line-height:1.45; margin-top:8px;">
       <div style="font-weight:700;">記載上の注意</div>
       <div>1．必要がある場合は続紙に記載して添付すること。</div>
       <div>2．必要がある場合は画像診断のフィルム、検査の記録を添付すること。</div>
